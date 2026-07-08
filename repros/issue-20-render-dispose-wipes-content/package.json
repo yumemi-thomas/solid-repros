@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@solidjs/web": "2.0.0-beta.15",
-    "solid-js": "2.0.0-beta.15"
+    "@solidjs/web": "https://pkg.pr.new/yumemi-thomas/solid/@solidjs/web@85b70b0",
+    "solid-js": "https://pkg.pr.new/yumemi-thomas/solid/solid-js@85b70b0"
   },
   "devDependencies": {
     "vite": "^6.0.0",

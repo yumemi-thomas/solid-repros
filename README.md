@@ -18,13 +18,15 @@ SSR repros run `npm run repro` and print `PASS`/`FAIL` in the **terminal**.
 
 ## Repros
 
-Solid 2.0.0-beta.15 bug-hunt findings (each pinned to `solid-js@2.0.0-beta.15`
-+ `@solidjs/web@2.0.0-beta.15`; open the link, read the on-screen verdict for
-client repros or the terminal for SSR):
+Solid 2.0 bug-hunt findings. Each runs against the `next`-HEAD preview build
+(`pkg.pr.new/yumemi-thomas/solid/...@85b70b0`); open the link and read the
+on-screen verdict for client repros or the terminal for SSR. **8 of 9 still
+reproduce at that commit**; finding 12 is now fixed (kept as a regression
+check — it shows PASS).
 
 Client (in-browser verdict):
 
-- [issue-12 — store descriptor reports stale `.value`](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-12-store-descriptor-stale-value)
+- [issue-12 — store descriptor reports stale `.value`](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-12-store-descriptor-stale-value) — ✅ **fixed at 85b70b0** (shows PASS)
 - [issue-15 — effect `error` handler gets `StatusError` wrapper](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-15-effect-error-statuserror-wrapper)
 - [issue-16 — `createReaction` re-arm accumulates arms](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-16-createreaction-rearm-accumulates)
 - [issue-20 — `render()` dispose wipes pre-existing content](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-20-render-dispose-wipes-content)
