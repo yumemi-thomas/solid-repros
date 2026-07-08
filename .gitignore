@@ -3,3 +3,6 @@ dist/
 .DS_Store
 *.log
 .vite/
+
+# per-repro lockfiles (StackBlitz installs fresh)
+package-lock.json
