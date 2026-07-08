@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>issue-20-render-dispose-wipes-content</title>
   </head>
-  <body>
+  <body style="font-family: system-ui">
+    <!-- Host page's own markup. An embeddable widget will be mounted INTO this
+         #reviews slot; the host's heading + summary must survive the widget
+         being unmounted. Solid does not own #reviews. -->
+    <section
+      id="reviews"
+      style="border: 1px solid #999; border-radius: 8px; padding: 12px; margin: 12px 0; max-width: 40rem"
+    >
+      <h3>Customer reviews</h3>
+      <p>★ 4.8 average — 1,200 verified reviews (rendered by the host page)</p>
+    </section>
+
+    <!-- The control app (owns only #root). -->
     <div id="root"></div>
     <script src="/src/index.jsx" type="module"></script>
   </body>
