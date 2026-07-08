@@ -1,53 +1,68 @@
-// render() into a NON-EMPTY container appends (leaves existing children), but
-// the disposer does `element.textContent = ""` and wipes the pre-existing
-// content too. — Solid 2.0.0-beta.15 (and 1.x).
+// render() into a NON-EMPTY container appends, but the disposer does
+// `element.textContent = ""` and wipes the whole container. — Solid 2.0.0-beta.15 (and 1.x).
 //
-// Realistic case: a Solid widget (feedback button) mounted into a
-// server-rendered article region (#content, authored in index.html). Mounting
-// appends the widget after the article; unmounting should remove only the
-// widget, but it blanks the whole article.
+// Realistic case: an imperative toast/overlay mounted onto document.body (which
+// already contains the app in #root — i.e. a non-empty container). Dismissing
+// the toast should remove only the toast, but it blanks document.body, taking
+// the entire app down with it.
 // Issue draft: issue-drafts/20-dispose-wipes-preexisting-content.md
-import { createSignal } from "solid-js";
 import { render } from "@solidjs/web";
 
-function FeedbackWidget() {
-  const [n, setN] = createSignal(0);
+function Toast(props) {
   return (
-    <p>
-      <button onClick={() => setN(n() + 1)}>👍 helpful ({n()})</button>
-    </p>
+    <div
+      style={{
+        position: "fixed",
+        bottom: "16px",
+        right: "16px",
+        padding: "12px 16px",
+        background: "#137333",
+        color: "#fff",
+        "border-radius": "8px",
+        "box-shadow": "0 2px 8px rgba(0,0,0,.3)",
+      }}
+    >
+      Saved!
+      <button onClick={props.onDismiss} style={{ "margin-left": "8px" }}>
+        dismiss
+      </button>
+    </div>
   );
 }
 
 export default function App() {
-  const [mounted, setMounted] = createSignal(false);
-  const [articleGone, setArticleGone] = createSignal(false);
-  let dispose;
+  let toastDispose;
 
-  const content = () => document.getElementById("content");
-
-  function mount() {
-    // Appends into the server-rendered article (the container is non-empty).
-    dispose = render(() => <FeedbackWidget />, content());
-    setMounted(true);
+  function showToast() {
+    if (toastDispose) return;
+    // document.body already holds the app (#root) — it is a non-empty container.
+    toastDispose = render(() => <Toast onDismiss={dismiss} />, document.body);
   }
-  function unmount() {
-    dispose?.();
-    dispose = undefined;
-    setMounted(false);
-    setArticleGone(!content().querySelector("h1")); // did the article survive?
+
+  function dismiss() {
+    toastDispose?.();
+    toastDispose = undefined;
+    // The disposer ran `document.body.textContent = ""`, so #root (the whole
+    // app) is gone too. Re-render a verdict into the now-empty body to show it.
+    if (!document.getElementById("root")) {
+      render(
+        () => (
+          <p style={{ "font-family": "system-ui", padding: "16px", color: "#c5221f" }}>
+            <b>FAIL — dismissing the toast wiped the entire app.</b> render()'s
+            disposer did <code>document.body.textContent = ""</code>, removing
+            #root and everything else — not just the toast it added.
+          </p>
+        ),
+        document.body
+      );
+    }
   }
 
   return (
-    <section style={{ padding: "16px" }}>
-      <h2>Mount a widget into the server-rendered article</h2>
-      <button onClick={mount} disabled={mounted()}>mount widget</button>{" "}
-      <button onClick={unmount} disabled={!mounted()}>unmount widget</button>
-      <p style={{ color: articleGone() ? "#c5221f" : "#666" }}>
-        {articleGone()
-          ? "FAIL — unmounting the widget also wiped the server-rendered article above."
-          : "Mount appends the 👍 widget inside the article above; unmount should remove only the widget."}
-      </p>
-    </section>
+    <main style={{ "font-family": "system-ui", padding: "16px" }}>
+      <h1>Acme Dashboard</h1>
+      <p>The whole app lives in #root. A toast on document.body must not take it down.</p>
+      <button onClick={showToast}>Save (show toast)</button>
+    </main>
   );
 }

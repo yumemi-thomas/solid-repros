@@ -5,22 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>issue-20-render-dispose-wipes-content</title>
   </head>
-  <body style="font-family: system-ui">
-    <!-- Server-rendered page shell (hand-written here to stand in for SSR
-         output). Solid does NOT own this element — it must survive a widget
-         mounted into it being unmounted. -->
-    <article
-      id="content"
-      style="border: 1px solid #999; border-radius: 8px; padding: 12px; margin: 12px 0; max-width: 40rem"
-    >
-      <h1>Acme Docs — Getting Started</h1>
-      <p>
-        This article was rendered on the server and must stay on the page when
-        the interactive widget below is unmounted.
-      </p>
-    </article>
-
-    <!-- Solid owns only #root. -->
+  <body>
     <div id="root"></div>
     <script src="/src/index.jsx" type="module"></script>
   </body>
