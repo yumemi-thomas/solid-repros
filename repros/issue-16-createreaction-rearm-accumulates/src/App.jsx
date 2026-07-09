@@ -1,5 +1,5 @@
 // Re-arming createReaction before it fires accumulates arms instead of
-// replacing tracked sources (1.x replaces). — Solid 2.0.0-beta.15
+// replacing tracked sources (1.x replaces). — Solid 2.0.0-beta.16
 // Arm, then bump a: 1.x leaves the counter at 0 (a was superseded); 2.0 shows 1.
 // Issue draft: issue-drafts/16-createreaction-rearm-accumulates.md
 import { createSignal, createReaction, flush } from "solid-js";

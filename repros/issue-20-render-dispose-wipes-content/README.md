@@ -8,5 +8,5 @@ already holds a heading + summary the host page rendered.
 2. **unmount widget** — the disposer runs `el.textContent = ""` and blanks the
    whole slot, destroying the host's heading + summary too. Status turns red.
 
-Deps are pinned to the `next`-HEAD preview build (`pkg.pr.new/...@85b70b0`); the
-bug also reproduces on published `2.0.0-beta.15`.
+Deps are pinned to published `2.0.0-beta.16` (npm); the bug also reproduces on
+`2.0.0-beta.15` and 1.x.

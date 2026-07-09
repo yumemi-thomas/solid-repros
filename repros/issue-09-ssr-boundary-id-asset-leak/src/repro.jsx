@@ -3,7 +3,7 @@
 // `_currentBoundaryId` is never restored, so a later ROOT-level lazy()'s module
 // registration lands in the boundary's asset map instead of the root
 // `_$HY.r["_assets"]` map — the root map is never emitted and the root-level
-// lazy footer can never hydrate on the client. — Solid 2.0.0-beta.15
+// lazy footer can never hydrate on the client. — Solid 2.0.0-beta.16
 // Issue draft: issue-drafts/09-boundary-id-leak-lazy-hydration.md
 import { renderToStream } from "@solidjs/web";
 import { createMemo, lazy, Loading } from "solid-js";

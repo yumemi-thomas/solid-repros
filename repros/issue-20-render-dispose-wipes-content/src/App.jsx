@@ -1,5 +1,5 @@
 // render() into a NON-EMPTY container appends, but the disposer does
-// `element.textContent = ""` and wipes the whole container. — Solid 2.0.0-beta.15 (and 1.x).
+// `element.textContent = ""` and wipes the whole container. — Solid 2.0.0-beta.16 (and 1.x).
 //
 // Realistic case: an embeddable widget / client-only island with a mount(el)
 // API — the exact shape @astrojs/solid-js uses (`render(fn, element)` + calling

@@ -2,7 +2,7 @@
 // lazy() inside <NoHydration> silently renders NOTHING during SSR. The
 // moduleUrl/manifest guards are correctly waived for no-hydrate zones, but the
 // server lazy() wrapper bails out before creating the render memo, so the
-// resolved content is dropped — leaving an empty hole. — Solid 2.0.0-beta.15
+// resolved content is dropped — leaving an empty hole. — Solid 2.0.0-beta.16
 // Issue draft: issue-drafts/08-nohydration-lazy-renders-nothing.md
 import { renderToStringAsync, NoHydration } from "@solidjs/web";
 import { lazy } from "solid-js";

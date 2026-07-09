@@ -3,7 +3,7 @@
 // thenable (a PromiseLike — the shape of a knex/mongoose query builder). The
 // client awaits any Promises/A+ object; the server only checks
 // `result instanceof Promise`, stores the thenable as a sync value, and
-// dereferences undefined deep in the node resolver. — Solid 2.0.0-beta.15
+// dereferences undefined deep in the node resolver. — Solid 2.0.0-beta.16
 // Issue draft: issue-drafts/07-ssr-thenable-crash.md
 import { renderToStringAsync } from "@solidjs/web";
 import { createMemo, Loading } from "solid-js";

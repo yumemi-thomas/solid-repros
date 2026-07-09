@@ -2,7 +2,7 @@
 // SSR swallows FALSY async rejections: an async createMemo that rejects with
 // `undefined` / `""` inside <Loading> + <Errored> renders its CHILDREN as if
 // resolved, instead of the <Errored> fallback. A real Error correctly reaches
-// the fallback (control). — Solid 2.0.0-beta.15
+// the fallback (control). — Solid 2.0.0-beta.16
 // Issue draft: issue-drafts/06-ssr-falsy-rejection-swallowed.md
 import { renderToStringAsync } from "@solidjs/web";
 import { createMemo, Loading, Errored } from "solid-js";

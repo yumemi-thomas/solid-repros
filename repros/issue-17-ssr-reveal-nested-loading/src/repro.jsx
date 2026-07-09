@@ -3,7 +3,7 @@
 // into the ancestor <Reveal order="together"> group as if it were a direct
 // slot. The group then holds the already-ready outer content hostage until the
 // slow nested boundary resolves. Only DIRECT slots should participate (the
-// client clears the reveal context for children). — Solid 2.0.0-beta.15
+// client clears the reveal context for children). — Solid 2.0.0-beta.16
 // Issue draft: issue-drafts/17-reveal-nested-loading-grouping.md
 import { renderToStream } from "@solidjs/web";
 import { createMemo, Loading, Reveal } from "solid-js";
