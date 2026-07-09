@@ -15,8 +15,9 @@
   <h1 id="title">Loading repro…</h1>
   <p id="status" class="muted">Fetching files from GitHub…</p>
   <p id="fallback" style="display:none"><button id="go">Open in StackBlitz</button></p>
-  <p class="muted">Files are fetched live from <code>repros/&lt;slug&gt;</code> on GitHub and
-    POSTed straight into StackBlitz — no repo import. <a href="./">All repros</a>.</p>
+  <p class="muted">Files come from the manifest (served by GitHub Pages) and are
+    POSTed straight into StackBlitz — no repo import, no rate-limited fetches.
+    <a href="./">All repros</a>.</p>
 
   <script type="module">
     const RUN = "https://stackblitz.com/run";
@@ -28,22 +29,14 @@
 
     async function main() {
       if (!slug) return fail('Missing <code>?repro=&lt;slug&gt;</code>. See <a href="./">the index</a>.');
-      const manifest = await fetch("./repros.json").then(r => r.json());
-      const { owner, repo, branch, repros } = manifest;
+      // One same-origin fetch from the Pages CDN — no raw.githubusercontent (429-prone).
+      const { repros } = await fetch("./repros.json").then(r => r.json());
       const entry = repros[slug];
       if (!entry) return fail(`Unknown repro <code>${slug}</code>. See <a href="./">the index</a>.`);
       titleEl.textContent = entry.title;
 
-      const rawBase = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/repros/${slug}/`;
-      const contents = await Promise.all(
-        entry.files.map(async p => {
-          const res = await fetch(rawBase + p);
-          if (!res.ok) throw new Error(`${p} → HTTP ${res.status}`);
-          return [p, await res.text()];
-        }),
-      );
-
-      // Build the StackBlitz POST form from the fetched files.
+      const paths = Object.keys(entry.files);
+      // Build the StackBlitz POST form from the embedded file contents.
       const form = document.createElement("form");
       form.method = "post";
       form.action = `${RUN}?file=${encodeURIComponent(entry.openFile)}`;
@@ -54,10 +47,10 @@
       add("project[title]", entry.title);
       add("project[description]", `Solid 2.0 repro — ${entry.title}`);
       add("project[template]", "node");
-      for (const [p, c] of contents) add(`project[files][${p}]`, c);
+      for (const p of paths) add(`project[files][${p}]`, entry.files[p]);
       document.body.appendChild(form);
 
-      statusEl.textContent = `Loaded ${contents.length} files — opening StackBlitz…`;
+      statusEl.textContent = `Loaded ${paths.length} files — opening StackBlitz…`;
       const submit = () => form.submit();
       document.getElementById("go").onclick = submit;
       document.getElementById("fallback").style.display = "";

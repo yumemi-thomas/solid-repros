@@ -1,9 +1,8 @@
 // Generate docs/repros.json — a manifest mapping each repro slug to its file
-// PATHS (not contents), plus title + the file to open. The dynamic launcher
-// (docs/launch.html) reads this, fetches the file contents live from GitHub raw
-// at click time, and POSTs them into StackBlitz. So repros/ stays the single
-// source of truth: content edits need NO regeneration — only re-run this when
-// files are ADDED or REMOVED from a repro.
+// CONTENTS (path → text), plus title + the file to open. The dynamic launcher
+// (docs/launch.html) fetches ONLY this one file (same-origin, from the GitHub
+// Pages CDN — no raw.githubusercontent rate limits) and POSTs the embedded files
+// into StackBlitz. Re-run after ANY repro edit (contents are snapshotted here).
 //
 // Usage: node tools/build-manifest.mjs
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, statSync } from "node:fs";
@@ -32,15 +31,17 @@ const repros = {};
 for (const slug of readdirSync(REPROS)) {
   const dir = join(REPROS, slug);
   if (!statSync(dir).isDirectory()) continue;
-  const files = walk(dir).sort();
-  const openFile = files.includes("src/repro.jsx")
+  const paths = walk(dir).sort();
+  const openFile = paths.includes("src/repro.jsx")
     ? "src/repro.jsx"
-    : files.includes("src/App.jsx")
+    : paths.includes("src/App.jsx")
     ? "src/App.jsx"
     : "package.json";
+  const files = {};
+  for (const p of paths) files[p] = readFileSync(join(dir, p), "utf8");
   repros[slug] = { title: slug, openFile, kind: openFile === "src/repro.jsx" ? "ssr" : "client", files };
 }
 
-writeFileSync(join(OUT, "repros.json"), JSON.stringify({ owner: "yumemi-thomas", repo: "solid-repros", branch: "main", repros }, null, 2) + "\n");
+writeFileSync(join(OUT, "repros.json"), JSON.stringify({ owner: "yumemi-thomas", repo: "solid-repros", branch: "main", repros }) + "\n");
 console.log(`wrote docs/repros.json (${Object.keys(repros).length} repros)`);
-for (const [slug, r] of Object.entries(repros)) console.log(`  ${slug}: ${r.files.length} files, open=${r.openFile}`);
+for (const [slug, r] of Object.entries(repros)) console.log(`  ${slug}: ${Object.keys(r.files).length} files, open=${r.openFile}`);
