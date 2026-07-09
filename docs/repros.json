@@ -1,0 +1,106 @@
+{
+  "owner": "yumemi-thomas",
+  "repo": "solid-repros",
+  "branch": "main",
+  "repros": {
+    "issue-06-ssr-falsy-rejection-swallowed": {
+      "title": "issue-06-ssr-falsy-rejection-swallowed",
+      "openFile": "src/repro.jsx",
+      "kind": "ssr",
+      "files": [
+        ".stackblitzrc",
+        "README.md",
+        "package.json",
+        "src/repro.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-07-ssr-thenable-crash": {
+      "title": "issue-07-ssr-thenable-crash",
+      "openFile": "src/repro.jsx",
+      "kind": "ssr",
+      "files": [
+        ".stackblitzrc",
+        "README.md",
+        "package.json",
+        "src/repro.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-08-ssr-nohydration-lazy-empty": {
+      "title": "issue-08-ssr-nohydration-lazy-empty",
+      "openFile": "src/repro.jsx",
+      "kind": "ssr",
+      "files": [
+        ".stackblitzrc",
+        "README.md",
+        "package.json",
+        "src/repro.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-09-ssr-boundary-id-asset-leak": {
+      "title": "issue-09-ssr-boundary-id-asset-leak",
+      "openFile": "src/repro.jsx",
+      "kind": "ssr",
+      "files": [
+        ".stackblitzrc",
+        "README.md",
+        "package.json",
+        "src/repro.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-1234-signal-batch": {
+      "title": "issue-1234-signal-batch",
+      "openFile": "src/App.jsx",
+      "kind": "client",
+      "files": [
+        "README.md",
+        "index.html",
+        "package.json",
+        "src/App.jsx",
+        "src/index.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-16-createreaction-rearm-accumulates": {
+      "title": "issue-16-createreaction-rearm-accumulates",
+      "openFile": "src/App.jsx",
+      "kind": "client",
+      "files": [
+        "README.md",
+        "index.html",
+        "package.json",
+        "src/App.jsx",
+        "src/index.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-17-ssr-reveal-nested-loading": {
+      "title": "issue-17-ssr-reveal-nested-loading",
+      "openFile": "src/repro.jsx",
+      "kind": "ssr",
+      "files": [
+        ".stackblitzrc",
+        "README.md",
+        "package.json",
+        "src/repro.jsx",
+        "vite.config.js"
+      ]
+    },
+    "issue-20-render-dispose-wipes-content": {
+      "title": "issue-20-render-dispose-wipes-content",
+      "openFile": "src/App.jsx",
+      "kind": "client",
+      "files": [
+        "README.md",
+        "index.html",
+        "package.json",
+        "src/App.jsx",
+        "src/index.jsx",
+        "vite.config.js"
+      ]
+    }
+  }
+}

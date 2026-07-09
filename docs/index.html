@@ -1,13 +1,27 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8" /><title>solid-repros — StackBlitz launchers</title>
-<style>body{font-family:system-ui,sans-serif;margin:3rem auto;max-width:44rem;padding:0 1rem;color:#ddd;background:#0e1116}a{color:#7cc}</style></head>
-<body><h1>solid-repros</h1><p>Each link POSTs the repro's files straight into StackBlitz (no GitHub import).</p>
-<ul>
-  <li><a href="./issue-06-ssr-falsy-rejection-swallowed.html">issue-06-ssr-falsy-rejection-swallowed</a> — <em>SSR (terminal)</em></li>
-  <li><a href="./issue-07-ssr-thenable-crash.html">issue-07-ssr-thenable-crash</a> — <em>SSR (terminal)</em></li>
-  <li><a href="./issue-08-ssr-nohydration-lazy-empty.html">issue-08-ssr-nohydration-lazy-empty</a> — <em>SSR (terminal)</em></li>
-  <li><a href="./issue-09-ssr-boundary-id-asset-leak.html">issue-09-ssr-boundary-id-asset-leak</a> — <em>SSR (terminal)</em></li>
-  <li><a href="./issue-1234-signal-batch.html">issue-1234-signal-batch</a> — <em>client (preview)</em></li>
-  <li><a href="./issue-16-createreaction-rearm-accumulates.html">issue-16-createreaction-rearm-accumulates</a> — <em>client (preview)</em></li>
-  <li><a href="./issue-17-ssr-reveal-nested-loading.html">issue-17-ssr-reveal-nested-loading</a> — <em>SSR (terminal)</em></li>
-  <li><a href="./issue-20-render-dispose-wipes-content.html">issue-20-render-dispose-wipes-content</a> — <em>client (preview)</em></li>
-</ul></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>solid-repros — StackBlitz launchers</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 44rem; padding: 0 1rem; color: #dde; background: #0e1116; }
+    a { color: #7cc; } em { color: #889; } li { margin: .3rem 0; }
+  </style>
+</head>
+<body>
+  <h1>solid-repros</h1>
+  <p>Each link fetches the repro's files live from GitHub and POSTs them straight
+     into StackBlitz (no repo import). Source lives in
+     <a href="https://github.com/yumemi-thomas/solid-repros/tree/main/repros">repros/</a>.</p>
+  <ul id="list"><li>Loading…</li></ul>
+  <script type="module">
+    const m = await fetch("./repros.json").then(r => r.json());
+    document.getElementById("list").innerHTML = Object.entries(m.repros)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([slug, r]) =>
+        `<li><a href="./launch.html?repro=${encodeURIComponent(slug)}">${slug}</a> — <em>${r.kind === "ssr" ? "SSR (terminal)" : "client (preview)"}</em></li>`)
+      .join("");
+  </script>
+</body>
+</html>

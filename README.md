@@ -6,29 +6,32 @@ that opens directly in StackBlitz — no local setup required.
 
 ## Open a repro in StackBlitz
 
-Each repro has a **launcher page** hosted on GitHub Pages:
+One **dynamic launcher** (GitHub Pages) opens any repro by slug:
 
 ```
-https://yumemi-thomas.github.io/solid-repros/<slug>.html
+https://yumemi-thomas.github.io/solid-repros/launch.html?repro=<slug>
 ```
 
-Opening it POSTs the repro's files straight into StackBlitz (`stackblitz.com/run`,
-`template: node`) and auto-starts it — no GitHub import, so it's immune to the
-subfolder-import failures the classic `stackblitz.com/github/...` URLs hit. The
-project is ephemeral (fork it in StackBlitz to save). Client repros open the
-preview; SSR repros run `npm run repro` and print `PASS`/`FAIL` in the **terminal**.
+The launcher fetches that repro's files **live from GitHub** (`raw.githubusercontent.com`,
+CORS-enabled) and POSTs them straight into StackBlitz (`stackblitz.com/run`,
+`template: node`) — no GitHub repo import, so it's immune to the subfolder-import
+failures the classic `stackblitz.com/github/...` URLs hit. Because files are read
+live, [`repros/`](./repros) stays the single source of truth: **editing a repro
+needs no rebuild** — the link is instantly current. The StackBlitz project is
+ephemeral (fork it there to save). Client repros open the preview; SSR repros run
+`npm run repro` and print `PASS`/`FAIL` in the **terminal**.
 
-The launchers are generated from the repro folders — after editing a repro, run:
+Index of all repros: <https://yumemi-thomas.github.io/solid-repros/>.
+
+The launcher reads `docs/repros.json`, a manifest of each repro's file **paths**
+(not contents). Regenerate it only when files are **added or removed** from a repro:
 
 ```
-node tools/build-launchers.mjs
+node tools/build-manifest.mjs
 ```
 
-which regenerates `docs/<slug>.html` (+ `docs/index.html`). See the full index at
-<https://yumemi-thomas.github.io/solid-repros/>.
-
-> The raw folders under [`repros/`](./repros) are still standalone Vite apps you
-> can clone and run locally (`npm install && npm run dev`).
+> The raw folders under [`repros/`](./repros) are also standalone Vite apps you can
+> clone and run locally (`npm install && npm run dev`).
 
 ## Repros
 
@@ -39,16 +42,16 @@ issue-15 dropped — fixed by #2840.)
 
 Client (in-browser verdict):
 
-- [issue-16 — `createReaction` re-arm accumulates arms](https://yumemi-thomas.github.io/solid-repros/issue-16-createreaction-rearm-accumulates.html)
-- [issue-20 — `render()` dispose wipes pre-existing content](https://yumemi-thomas.github.io/solid-repros/issue-20-render-dispose-wipes-content.html)
+- [issue-16 — `createReaction` re-arm accumulates arms](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-16-createreaction-rearm-accumulates)
+- [issue-20 — `render()` dispose wipes pre-existing content](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-20-render-dispose-wipes-content)
 
 SSR (terminal verdict — `npm run repro`):
 
-- [issue-06 — SSR swallows falsy async rejections](https://yumemi-thomas.github.io/solid-repros/issue-06-ssr-falsy-rejection-swallowed.html)
-- [issue-07 — SSR crashes on non-Promise thenables](https://yumemi-thomas.github.io/solid-repros/issue-07-ssr-thenable-crash.html)
-- [issue-08 — `lazy()` in `<NoHydration>` renders nothing](https://yumemi-thomas.github.io/solid-repros/issue-08-ssr-nohydration-lazy-empty.html)
-- [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://yumemi-thomas.github.io/solid-repros/issue-09-ssr-boundary-id-asset-leak.html)
-- [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/issue-17-ssr-reveal-nested-loading.html)
+- [issue-06 — SSR swallows falsy async rejections](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-06-ssr-falsy-rejection-swallowed)
+- [issue-07 — SSR crashes on non-Promise thenables](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-07-ssr-thenable-crash)
+- [issue-08 — `lazy()` in `<NoHydration>` renders nothing](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-08-ssr-nohydration-lazy-empty)
+- [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-09-ssr-boundary-id-asset-leak)
+- [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-17-ssr-reveal-nested-loading)
 
 ## Structure
 
