@@ -9,7 +9,7 @@ that opens directly in StackBlitz — no local setup required.
 Point StackBlitz at the repro's subfolder:
 
 ```
-https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/<slug>
+https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/<slug>
 ```
 
 StackBlitz treats the folder in the URL as the project root, runs `npm install`,
@@ -25,16 +25,16 @@ issue-15 dropped — fixed by #2840.)
 
 Client (in-browser verdict):
 
-- [issue-16 — `createReaction` re-arm accumulates arms](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-16-createreaction-rearm-accumulates)
-- [issue-20 — `render()` dispose wipes pre-existing content](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-20-render-dispose-wipes-content)
+- [issue-16 — `createReaction` re-arm accumulates arms](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-16-createreaction-rearm-accumulates)
+- [issue-20 — `render()` dispose wipes pre-existing content](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-20-render-dispose-wipes-content)
 
 SSR (terminal verdict — `npm run repro`):
 
-- [issue-06 — SSR swallows falsy async rejections](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-06-ssr-falsy-rejection-swallowed)
-- [issue-07 — SSR crashes on non-Promise thenables](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-07-ssr-thenable-crash)
-- [issue-08 — `lazy()` in `<NoHydration>` renders nothing](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-08-ssr-nohydration-lazy-empty)
-- [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-09-ssr-boundary-id-asset-leak)
-- [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-17-ssr-reveal-nested-loading)
+- [issue-06 — SSR swallows falsy async rejections](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-06-ssr-falsy-rejection-swallowed)
+- [issue-07 — SSR crashes on non-Promise thenables](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-07-ssr-thenable-crash)
+- [issue-08 — `lazy()` in `<NoHydration>` renders nothing](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-08-ssr-nohydration-lazy-empty)
+- [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-09-ssr-boundary-id-asset-leak)
+- [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://stackblitz.com/~/github.com/yumemi-thomas/solid-repros/tree/main/repros/issue-17-ssr-reveal-nested-loading)
 
 ## Structure
 
