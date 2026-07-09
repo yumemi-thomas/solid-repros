@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open issue-08-ssr-nohydration-lazy-empty in StackBlitz</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 40rem; padding: 0 1rem; color: #ddd; background: #0e1116; }
+    a, button { color: #7cc; }
+    button { font: inherit; padding: .6rem 1rem; border: 1px solid #7cc; background: transparent; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>issue-08-ssr-nohydration-lazy-empty</h1>
+  <p>Opening this reproduction in StackBlitz&hellip; if it doesn't start automatically, click the button.</p>
+  <form id="sb" method="post" action="https://stackblitz.com/run?file=src%2Frepro.jsx" target="_self">
+    <input type="hidden" name="project[title]" value="issue-08-ssr-nohydration-lazy-empty" />
+    <input type="hidden" name="project[description]" value="Solid 2.0 repro — issue-08-ssr-nohydration-lazy-empty" />
+    <input type="hidden" name="project[template]" value="node" />
+      <input type="hidden" name="project[files][.stackblitzrc]" value="{
+  &quot;installDependencies&quot;: true,
+  &quot;startCommand&quot;: &quot;npm run repro&quot;
+}
+" />
+      <input type="hidden" name="project[files][README.md]" value="# issue-08 — `lazy()` in `&lt;NoHydration&gt;` renders nothing
+
+`lazy()` inside `&lt;NoHydration&gt;` silently renders **nothing** during SSR. The
+moduleUrl/manifest requirements are correctly waived for no-hydrate zones, but
+the server `lazy()` wrapper bails out *before* creating the render memo, so the
+resolved content is dropped — leaving an empty hole. The stream still completes
+&quot;successfully&quot;.
+
+Run `npm run repro` and read the **terminal** verdict (`PASS`/`FAIL`).
+
+Pinned to published `2.0.0-beta.16` (npm); also reproduces on `2.0.0-beta.15`.
+Issue draft: `issue-drafts/08-nohydration-lazy-renders-nothing.md`.
+" />
+      <input type="hidden" name="project[files][package.json]" value="{
+  &quot;name&quot;: &quot;issue-08-ssr-nohydration-lazy-empty&quot;,
+  &quot;private&quot;: true,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;repro&quot;: &quot;vite-node src/repro.jsx&quot;,
+    &quot;dev&quot;: &quot;vite-node src/repro.jsx&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;@solidjs/web&quot;: &quot;2.0.0-beta.16&quot;,
+    &quot;solid-js&quot;: &quot;2.0.0-beta.16&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^6.0.0&quot;,
+    &quot;vite-node&quot;: &quot;^6.0.0&quot;,
+    &quot;vite-plugin-solid&quot;: &quot;next&quot;
+  }
+}
+" />
+      <input type="hidden" name="project[files][src/repro.jsx]" value="// Server-only reproduction — run in the StackBlitz terminal (npm run repro).
+// lazy() inside &lt;NoHydration&gt; silently renders NOTHING during SSR. The
+// moduleUrl/manifest guards are correctly waived for no-hydrate zones, but the
+// server lazy() wrapper bails out before creating the render memo, so the
+// resolved content is dropped — leaving an empty hole. — Solid 2.0.0-beta.16
+// Issue draft: issue-drafts/08-nohydration-lazy-renders-nothing.md
+import { renderToStringAsync, NoHydration } from &quot;@solidjs/web&quot;;
+import { lazy } from &quot;solid-js&quot;;
+
+const StaticFooter = lazy(async () =&gt; ({
+  default: () =&gt; &lt;p&gt;static lazy content&lt;/p&gt;,
+}));
+
+function App() {
+  return (
+    &lt;NoHydration&gt;
+      &lt;div&gt;
+        before-
+        &lt;StaticFooter /&gt;
+        -after
+      &lt;/div&gt;
+    &lt;/NoHydration&gt;
+  );
+}
+
+const html = await renderToStringAsync(() =&gt; &lt;App /&gt;);
+
+// The lazy component's content must appear in the static HTML.
+const ok = html.includes(&quot;static lazy content&quot;);
+
+console.log(&quot;=== lazy() inside &lt;NoHydration&gt; renders nothing (server-only) ===&quot;);
+console.log(ok ? &quot;PASS — bug fixed&quot; : &quot;FAIL — bug reproduced&quot;);
+console.log(&quot;expected: &lt;div&gt;before-…&lt;p&gt;static lazy content&lt;/p&gt;…-after&lt;/div&gt;&quot;);
+console.log(&quot;actual html:&quot;, html);
+" />
+      <input type="hidden" name="project[files][vite.config.js]" value="import { defineConfig } from &quot;vite&quot;;
+import solid from &quot;vite-plugin-solid&quot;;
+
+// SSR reproduction: the entry (src/repro.jsx) calls renderToStringAsync /
+// renderToStream and runs under Node via vite-node, so the Solid JSX must be
+// compiled with the server generator.
+export default defineConfig({
+  plugins: [solid({ solid: { generate: &quot;ssr&quot;, hydratable: true } })],
+});
+" />
+    <button type="submit">Open in StackBlitz</button>
+  </form>
+  <script>document.getElementById("sb").submit();</script>
+</body>
+</html>

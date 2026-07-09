@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open issue-16-createreaction-rearm-accumulates in StackBlitz</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 40rem; padding: 0 1rem; color: #ddd; background: #0e1116; }
+    a, button { color: #7cc; }
+    button { font: inherit; padding: .6rem 1rem; border: 1px solid #7cc; background: transparent; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>issue-16-createreaction-rearm-accumulates</h1>
+  <p>Opening this reproduction in StackBlitz&hellip; if it doesn't start automatically, click the button.</p>
+  <form id="sb" method="post" action="https://stackblitz.com/run?file=src%2FApp.jsx" target="_self">
+    <input type="hidden" name="project[title]" value="issue-16-createreaction-rearm-accumulates" />
+    <input type="hidden" name="project[description]" value="Solid 2.0 repro — issue-16-createreaction-rearm-accumulates" />
+    <input type="hidden" name="project[template]" value="node" />
+      <input type="hidden" name="project[files][README.md]" value="# issue-16 — `createReaction` re-arm accumulates arms
+
+`createReaction` should replace its tracked sources when you re-arm it before it
+fires (1.x semantics). In Solid 2.0 each `track()` adds a *new* deferred arm
+without disposing the superseded one, so the reaction fires more than once.
+
+Run `npm run dev` and use the buttons:
+
+1. **arm (track a, then b)** — arms on `a`, then re-arms on `b` before firing.
+2. **bump a** — should stay `0` (the `a` arm was superseded by `track(b)`);
+   2.0 shows `1`.
+3. **bump b** — 1.x total `1`, 2.0 total `2`: both arms stayed live.
+
+Pinned to published `2.0.0-beta.16` (npm). Issue draft:
+`issue-drafts/16-createreaction-rearm-accumulates.md`.
+
+&lt;!-- StackBlitz: hard-refresh if you hit a stale import error. --&gt;
+" />
+      <input type="hidden" name="project[files][index.html]" value="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;title&gt;issue-16-createreaction-rearm-accumulates&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;/src/index.jsx&quot; type=&quot;module&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+" />
+      <input type="hidden" name="project[files][package.json]" value="{
+  &quot;name&quot;: &quot;issue-16-createreaction-rearm-accumulates&quot;,
+  &quot;private&quot;: true,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;@solidjs/web&quot;: &quot;2.0.0-beta.16&quot;,
+    &quot;solid-js&quot;: &quot;2.0.0-beta.16&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;vite&quot;: &quot;^6.0.0&quot;,
+    &quot;vite-plugin-solid&quot;: &quot;next&quot;
+  }
+}
+" />
+      <input type="hidden" name="project[files][src/App.jsx]" value="// Re-arming createReaction before it fires accumulates arms instead of
+// replacing tracked sources (1.x replaces). — Solid 2.0.0-beta.16
+// Arm, then bump a: 1.x leaves the counter at 0 (a was superseded); 2.0 shows 1.
+// Issue draft: issue-drafts/16-createreaction-rearm-accumulates.md
+import { createSignal, createReaction, flush } from &quot;solid-js&quot;;
+
+export default function App() {
+  const [a, setA] = createSignal(0);
+  const [b, setB] = createSignal(0);
+  const [fired, setFired] = createSignal(0);
+  let count = 0; // reaction writes a plain counter (a signal write here halts)
+
+  // No createRoot: the component is the owner createReaction needs.
+  const track = createReaction(() =&gt; {
+    count++;
+  });
+
+  // No queueMicrotask: bumps run in click handlers, each its own flush.
+  const bump = (set, get) =&gt; () =&gt; {
+    set(get() + 1);
+    flush();
+    setFired(count);
+  };
+
+  return (
+    &lt;main style={{ &quot;font-family&quot;: &quot;system-ui&quot;, padding: &quot;16px&quot; }}&gt;
+      &lt;h2&gt;createReaction re-arm accumulates arms&lt;/h2&gt;
+      &lt;p&gt;reaction fired: &lt;b&gt;{fired()}&lt;/b&gt; time(s)&lt;/p&gt;
+      &lt;button onClick={() =&gt; { track(() =&gt; a()); track(() =&gt; b()); }}&gt;
+        arm (track a, then b)
+      &lt;/button&gt;{&quot; &quot;}
+      &lt;button onClick={bump(setA, a)}&gt;bump a&lt;/button&gt;{&quot; &quot;}
+      &lt;button onClick={bump(setB, b)}&gt;bump b&lt;/button&gt;
+      &lt;p style={{ color: &quot;#666&quot; }}&gt;
+        Arm, then bump a → should stay 0 (a was superseded by track(b)); 2.0
+        shows 1. Then bump b → 1.x total 1, 2.0 total 2: both arms stayed live.
+      &lt;/p&gt;
+    &lt;/main&gt;
+  );
+}
+" />
+      <input type="hidden" name="project[files][src/index.jsx]" value="import { render } from &quot;@solidjs/web&quot;;
+import App from &quot;./App&quot;;
+
+render(() =&gt; &lt;App /&gt;, document.getElementById(&quot;root&quot;));
+" />
+      <input type="hidden" name="project[files][vite.config.js]" value="import { defineConfig } from &quot;vite&quot;;
+import solid from &quot;vite-plugin-solid&quot;;
+
+export default defineConfig({
+  // hot: false disables solid-refresh (HMR) — irrelevant for a repro, and its
+  // dependency-scanner can miscompile some components in dev.
+  plugins: [solid({ hot: false })],
+});
+" />
+    <button type="submit">Open in StackBlitz</button>
+  </form>
+  <script>document.getElementById("sb").submit();</script>
+</body>
+</html>
