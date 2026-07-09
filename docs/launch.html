@@ -16,10 +16,12 @@
   <p id="status" class="muted">Fetching files from GitHub…</p>
   <p id="fallback" style="display:none"><button id="go">Open in StackBlitz</button></p>
   <p class="muted">Files are fetched live from <code>repros/&lt;slug&gt;</code> on GitHub and
-    POSTed straight into StackBlitz — no repo import. <a href="./">All repros</a>.</p>
+    opened in StackBlitz via the official SDK (<code>@stackblitz/sdk</code>
+    <code>openProject</code>) — no repo import. <a href="./">All repros</a>.</p>
 
   <script type="module">
-    const RUN = "https://stackblitz.com/run";
+    import sdk from "https://esm.sh/@stackblitz/sdk@1";
+
     const params = new URLSearchParams(location.search);
     const slug = params.get("repro");
     const statusEl = document.getElementById("status");
@@ -35,33 +37,28 @@
       titleEl.textContent = entry.title;
 
       const rawBase = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/repros/${slug}/`;
-      const contents = await Promise.all(
+      const pairs = await Promise.all(
         entry.files.map(async p => {
           const res = await fetch(rawBase + p);
           if (!res.ok) throw new Error(`${p} → HTTP ${res.status}`);
           return [p, await res.text()];
         }),
       );
+      const files = Object.fromEntries(pairs);
 
-      // Build the StackBlitz POST form from the fetched files.
-      const form = document.createElement("form");
-      form.method = "post";
-      form.action = `${RUN}?file=${encodeURIComponent(entry.openFile)}`;
-      const add = (name, value) => {
-        const i = document.createElement("input");
-        i.type = "hidden"; i.name = name; i.value = value; form.appendChild(i);
+      const project = {
+        title: entry.title,
+        description: `Solid 2.0 repro — ${entry.title}`,
+        template: "node",
+        files,
       };
-      add("project[title]", entry.title);
-      add("project[description]", `Solid 2.0 repro — ${entry.title}`);
-      add("project[template]", "node");
-      for (const [p, c] of contents) add(`project[files][${p}]`, c);
-      document.body.appendChild(form);
+      const options = { openFile: entry.openFile, newWindow: false };
 
-      statusEl.textContent = `Loaded ${contents.length} files — opening StackBlitz…`;
-      const submit = () => form.submit();
-      document.getElementById("go").onclick = submit;
+      const open = () => sdk.openProject(project, options);
+      statusEl.textContent = `Loaded ${pairs.length} files — opening StackBlitz…`;
+      document.getElementById("go").onclick = open;
       document.getElementById("fallback").style.display = "";
-      submit();
+      open();
     }
 
     main().catch(e => fail(`Failed to load repro: ${e.message}`));
