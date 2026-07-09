@@ -30,11 +30,15 @@
     async function main() {
       if (!slug) return fail('Missing <code>?repro=&lt;slug&gt;</code>. See <a href="./">the index</a>.');
       // One same-origin fetch from the Pages CDN — no raw.githubusercontent (429-prone).
-      const { repros } = await fetch("./repros.json").then(r => r.json());
+      // no-store: never read a stale cached manifest (old array-format → numbered files).
+      const { repros } = await fetch("./repros.json", { cache: "no-store" }).then(r => r.json());
       const entry = repros[slug];
       if (!entry) return fail(`Unknown repro <code>${slug}</code>. See <a href="./">the index</a>.`);
       titleEl.textContent = entry.title;
 
+      if (!entry.files || typeof entry.files !== "object" || Array.isArray(entry.files)) {
+        return fail("Stale manifest (files not embedded). Hard-refresh this page.");
+      }
       const paths = Object.keys(entry.files);
       // Build the StackBlitz POST form from the embedded file contents.
       const form = document.createElement("form");
