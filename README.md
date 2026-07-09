@@ -12,19 +12,18 @@ One **dynamic launcher** (GitHub Pages) opens any repro by slug:
 https://yumemi-thomas.github.io/solid-repros/launch.html?repro=<slug>
 ```
 
-The launcher fetches that repro's files **live from GitHub** (`raw.githubusercontent.com`,
-CORS-enabled) and POSTs them straight into StackBlitz (`stackblitz.com/run`,
-`template: node`) — no GitHub repo import, so it's immune to the subfolder-import
-failures the classic `stackblitz.com/github/...` URLs hit. Because files are read
-live, [`repros/`](./repros) stays the single source of truth: **editing a repro
-needs no rebuild** — the link is instantly current. The StackBlitz project is
-ephemeral (fork it there to save). Client repros open the preview; SSR repros run
-`npm run repro` and print `PASS`/`FAIL` in the **terminal**.
+The launcher does one same-origin fetch of `docs/repros.json` (a manifest that
+embeds each repro's files) and POSTs them straight into StackBlitz
+(`stackblitz.com/run`, `template: node`) — no GitHub repo import (immune to the
+subfolder-import failures the classic `stackblitz.com/github/...` URLs hit) and no
+`raw.githubusercontent.com` fetches (which rate-limit / 429). The StackBlitz
+project is ephemeral (fork it there to save). Client repros open the preview; SSR
+repros run `npm run repro` and print `PASS`/`FAIL` in the **terminal**.
 
 Index of all repros: <https://yumemi-thomas.github.io/solid-repros/>.
 
-The launcher reads `docs/repros.json`, a manifest of each repro's file **paths**
-(not contents). Regenerate it only when files are **added or removed** from a repro:
+The manifest embeds file **contents**, so **regenerate it after editing any repro**
+(then commit `docs/repros.json`):
 
 ```
 node tools/build-manifest.mjs
