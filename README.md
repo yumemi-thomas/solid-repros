@@ -18,14 +18,13 @@ SSR repros run `npm run repro` and print `PASS`/`FAIL` in the **terminal**.
 
 ## Repros
 
-Solid 2.0 bug-hunt findings. Each runs against the `next`-HEAD preview build
-(`pkg.pr.new/yumemi-thomas/solid/...@85b70b0`); open the link and read the
-on-screen verdict for client repros or the terminal for SSR. All still
-reproduce at that commit. (Finding 12 was dropped — fixed by #2836.)
+Solid 2.0 bug-hunt findings. Each runs against published `2.0.0-beta.16` (npm);
+open the link and read the on-screen verdict for client repros or the terminal
+for SSR. All still reproduce on beta.16. (issue-12 dropped — fixed by #2836;
+issue-15 dropped — fixed by #2840.)
 
 Client (in-browser verdict):
 
-- [issue-15 — effect `error` handler gets `StatusError` wrapper](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-15-effect-error-statuserror-wrapper)
 - [issue-16 — `createReaction` re-arm accumulates arms](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-16-createreaction-rearm-accumulates)
 - [issue-20 — `render()` dispose wipes pre-existing content](https://stackblitz.com/github/yumemi-thomas/solid-repros/tree/main/repros/issue-20-render-dispose-wipes-content)
 
@@ -62,10 +61,12 @@ solid-repros/
 - **Self-contained:** everything the repro needs lives in its own folder.
 - **Minimal:** the smallest program that shows the bug; show observed vs.
   expected on screen or in the console.
-- **Solid version:** `solid-js: "next"` + `@solidjs/web: "next"` +
-  `vite-plugin-solid: "next"` targets Solid 2.0 (currently `2.0.0-beta.x`). For
-  a Solid 1.x repro, use `solid-js: "latest"` with `vite-plugin-solid: "latest"`
-  and import `render` from `solid-js/web` (drop `@solidjs/web`).
+- **Solid version:** these repros pin `solid-js` + `@solidjs/web` to an exact
+  Solid 2.0 release (currently `2.0.0-beta.16`) for durability, with
+  `vite-plugin-solid: "next"`. (`"next"` on `solid-js`/`@solidjs/web` also works
+  and floats to the latest beta.) For a Solid 1.x repro, use `solid-js: "latest"`
+  with `vite-plugin-solid: "latest"` and import `render` from `solid-js/web`
+  (drop `@solidjs/web`).
 
 ## Creating a repro
 
