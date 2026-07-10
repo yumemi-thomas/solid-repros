@@ -32,14 +32,12 @@ for (const slug of readdirSync(REPROS)) {
   const dir = join(REPROS, slug);
   if (!statSync(dir).isDirectory()) continue;
   const paths = walk(dir).sort();
-  const openFile = paths.includes("src/repro.jsx")
-    ? "src/repro.jsx"
-    : paths.includes("src/App.jsx")
-    ? "src/App.jsx"
-    : "package.json";
+  const openFile =
+    ["src/repro.jsx", "src/repro.tsx", "src/App.jsx", "src/App.tsx"].find(p => paths.includes(p)) ??
+    "package.json";
   const files = {};
   for (const p of paths) files[p] = readFileSync(join(dir, p), "utf8");
-  repros[slug] = { title: slug, openFile, kind: openFile === "src/repro.jsx" ? "ssr" : "client", files };
+  repros[slug] = { title: slug, openFile, kind: openFile.startsWith("src/repro.") ? "ssr" : "client", files };
 }
 
 writeFileSync(join(OUT, "repros.json"), JSON.stringify({ owner: "yumemi-thomas", repo: "solid-repros", branch: "main", repros }) + "\n");

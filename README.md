@@ -36,11 +36,15 @@ node tools/build-manifest.mjs
 
 Solid 2.0 bug-hunt findings. Each runs against published `2.0.0-beta.16` (npm);
 open the link and read the on-screen verdict for client repros or the terminal
-for SSR. All still reproduce on beta.16. (issue-12 dropped — fixed by #2836;
-issue-15 dropped — fixed by #2840.)
+for SSR. All still reproduce on beta.16. `issue-NN` slugs use wave-1 finding
+numbers; `draft-NN` slugs use the flattened `issue-drafts/` numbering (wave 2+).
+(Wave-1 repros for findings 12 and 15 were dropped — fixed by #2836 and #2840.)
 
 Client (in-browser verdict):
 
+- [draft-10 — `Errored` fallback gets the internal `StatusError` wrapper for falsy rejections](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-10-errored-falsy-rejection-wrapper)
+- [draft-11 — empty async iterable leaves `Loading` pending forever](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-11-empty-async-iterable-pends)
+- [draft-12 — async-iterator sync rejection silently dropped](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-12-iterator-sync-rejection-dropped)
 - [issue-16 — `createReaction` re-arm accumulates arms](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-16-createreaction-rearm-accumulates)
 - [issue-20 — `render()` dispose wipes pre-existing content](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-20-render-dispose-wipes-content)
 

@@ -1,0 +1,18 @@
+{
+  "name": "draft-11-empty-async-iterable-pends",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@solidjs/web": "2.0.0-beta.16",
+    "solid-js": "2.0.0-beta.16"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vite-plugin-solid": "next"
+  }
+}
