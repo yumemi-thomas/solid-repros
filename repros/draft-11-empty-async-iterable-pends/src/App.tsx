@@ -1,7 +1,4 @@
 /** @jsxImportSource @solidjs/web */
-// Empty async iterable leaves the Loading boundary pending forever — Solid 2.0.0-beta.16
-// Draft: issue-drafts/11-empty-async-iterable-pends.md
-// Repro test: packages/solid-signals/tests/hunt2-empty-async-iterable.test.ts
 import {
   createSignal,
   createMemo,

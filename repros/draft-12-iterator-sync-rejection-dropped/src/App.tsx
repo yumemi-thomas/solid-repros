@@ -1,7 +1,4 @@
 /** @jsxImportSource @solidjs/web */
-// Async-iterator sync rejection is silently dropped (pends forever) — Solid 2.0.0-beta.16
-// Draft: issue-drafts/12-iterator-sync-rejection-dropped.md
-// Repro test: packages/solid-signals/tests/hunt2-iterator-sync-rejection.test.ts
 import {
   createSignal,
   createMemo,

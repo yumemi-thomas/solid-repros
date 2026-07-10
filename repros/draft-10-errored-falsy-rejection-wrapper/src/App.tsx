@@ -1,6 +1,4 @@
 /** @jsxImportSource @solidjs/web */
-// Errored fallback gets an internal StatusError wrapper for a bare rejection — Solid 2.0.0-beta.16
-// Draft: issue-drafts/10-errored-falsy-rejection-wrapper.md
 import { Errored, Loading, createMemo } from "solid-js";
 
 export default function App() {
