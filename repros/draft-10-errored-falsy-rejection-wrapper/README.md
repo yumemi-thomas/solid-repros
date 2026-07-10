@@ -14,6 +14,8 @@ correctly; falsy ones leak the wrapper).
 Run `npm run dev` — the page runs the scenario automatically and shows a green
 **PASS** (fixed) or red **FAIL — bug reproduced** verdict.
 
+Saved StackBlitz: <https://stackblitz.com/edit/yfrggufy?file=src%2FApp.tsx>.
+
 Pinned to published `2.0.0-beta.16` (npm). Issue draft:
 `issue-drafts/10-errored-falsy-rejection-wrapper.md`.
 
