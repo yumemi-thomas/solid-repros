@@ -24,9 +24,20 @@ export default function App() {
   );
 }
 
+function describe(err: unknown) {
+  if (err === null || typeof err !== "object") return `err() = ${String(err)}`;
+  const e = err as Error & { source?: unknown; cause?: unknown };
+  return [
+    `err() is an object — the internal wrapper leaked:`,
+    `  constructor: ${e.constructor?.name}`,
+    `  message: ${JSON.stringify(e.message)}`,
+    `  instanceof Error: ${err instanceof Error}`,
+    `  internal .source: ${"source" in e ? "present — a reactive node leaked into userland" : "none"}`,
+    `  .cause: ${String(e.cause)}`
+  ].join("\n");
+}
+
 function Verdict(props: { error: unknown }) {
-  const leakedWrapper = () =>
-    props.error != null && typeof props.error === "object" && "source" in props.error;
   const ok = () => props.error === undefined;
   return (
     <div
@@ -41,14 +52,7 @@ function Verdict(props: { error: unknown }) {
       <div>
         expected: <code>err() === undefined (the original rejection value)</code>
       </div>
-      <div>
-        actual:{" "}
-        <code>
-          {leakedWrapper()
-            ? `internal StatusError wrapper leaked (err() has .source): ${String(props.error)}`
-            : `err() = ${String(props.error)}`}
-        </code>
-      </div>
+      <pre style={{ margin: "8px 0 0", "white-space": "pre-wrap" }}>{describe(props.error)}</pre>
     </div>
   );
 }
