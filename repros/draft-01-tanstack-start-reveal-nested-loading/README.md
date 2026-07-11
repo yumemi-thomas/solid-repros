@@ -18,6 +18,14 @@ reveal hostage.
 the **terminal**, then leaves the server running — open `/` in the preview to
 watch the skeletons hang.
 
+**SPA-nav vs hard-refresh A/B (visible in the preview):** navigate
+`/control` → `/` client-side and the page behaves correctly — product +
+reviews reveal together at ~800ms (client `Reveal` severs the scope at each
+boundary) while recommendations trails independently at ~2.5s on its own
+fallback. Hard-refresh `/` and the server enrolls the nested boundary into the
+group: skeletons everywhere until ~2.5s, then everything at once. The same app
+disagreeing with itself between CSR and SSR is the bug.
+
 Versions: `@tanstack/solid-start@2.0.0-beta.24`, `@tanstack/solid-router@2.0.0-beta.23`,
 `solid-js@2.0.0-beta.17`, `@solidjs/web@2.0.0-beta.17`, `vite-plugin-solid@3.0.0-next.7`.
 
