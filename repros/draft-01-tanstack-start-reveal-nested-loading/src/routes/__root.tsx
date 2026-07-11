@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/solid-router'
 import { HydrationScript } from '@solidjs/web'
-import type * as Solid from 'solid-js'
+import type { JSX } from '@solidjs/web'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -14,7 +14,7 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 })
 
-function RootDocument(props: { children: Solid.JSX.Element }) {
+function RootDocument(props: { children: JSX.Element }) {
   return (
     <html>
       <head>

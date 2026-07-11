@@ -1,0 +1,24 @@
+{
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    // Bundler (not "node"): the TanStack beta packages resolve through
+    // `exports` maps (e.g. @tanstack/solid-start/plugin/vite) that node10
+    // resolution cannot see. Matches the official Start recommendation.
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    // Solid 2.0: JSX types live in the renderer package, not solid-js.
+    "jsxImportSource": "@solidjs/web",
+    "types": ["vite/client"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    // Beta type definitions; per Start docs. Note: keep verbatimModuleSyntax
+    // OFF — the Start docs warn it can leak server bundles into the client.
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true
+  }
+}
