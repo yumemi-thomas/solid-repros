@@ -55,6 +55,7 @@ SSR (terminal verdict — `npm run repro`):
 - [issue-08 — `lazy()` in `<NoHydration>` renders nothing](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-08-ssr-nohydration-lazy-empty)
 - [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-09-ssr-boundary-id-asset-leak)
 - [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-17-ssr-reveal-nested-loading)
+- [draft-01 (TanStack Start) — same bug in a real TanStack Start × Solid 2.0 app; `npm start` prints the verdict and serves the page](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-01-tanstack-start-reveal-nested-loading)
 
 ## Structure
 
