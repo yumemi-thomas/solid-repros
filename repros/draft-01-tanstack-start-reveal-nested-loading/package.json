@@ -3,9 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "node scripts/repro.mjs",
     "start": "node scripts/repro.mjs",
     "repro": "node scripts/repro.mjs",
-    "dev": "vite dev"
+    "dev:server-only": "vite dev"
   },
   "dependencies": {
     "@solidjs/web": "2.0.0-beta.17",
