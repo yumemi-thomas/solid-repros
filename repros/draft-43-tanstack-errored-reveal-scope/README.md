@@ -17,6 +17,8 @@ them. Same tree, two behaviors:
 Your error boundary — or one your router injected that you never wrote —
 silently changes reveal timing depending on how the user arrived.
 
+Saved StackBlitz: <https://stackblitz.com/edit/1snzezwb?file=src%2Froutes%2Findex.tsx>
+
 `npm start` (StackBlitz runs it automatically) boots the dev server, streams
 `/control` (no `Errored`; a 2-key group coordinating at ~2s is CORRECT there)
 and `/` (Errored-wrapped panel; client semantics require a 1-key group at
