@@ -56,6 +56,7 @@ SSR (terminal verdict — `npm run repro`):
 - [issue-09 — boundary-id leak breaks root `lazy()` hydration](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-09-ssr-boundary-id-asset-leak)
 - [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-17-ssr-reveal-nested-loading)
 - [draft-01 (TanStack Start) — same bug in a real TanStack Start × Solid 2.0 app; `npm start` prints the verdict and serves the page](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-01-tanstack-start-reveal-nested-loading)
+- [draft-43 (TanStack Start) — `Errored`-wrapped `Loading` joins the `Reveal` group on the server, not on the client](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-43-tanstack-errored-reveal-scope)
 
 ## Structure
 
