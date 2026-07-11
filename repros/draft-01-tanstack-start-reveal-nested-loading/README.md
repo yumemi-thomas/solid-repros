@@ -12,6 +12,8 @@ the ancestor group (3-key `$dfj`), so the whole page sits on skeletons until
 ~2500ms — a slow descendant a route author may not even own holds the entire
 reveal hostage.
 
+Saved StackBlitz: <https://stackblitz.com/edit/d6vtf1ou?file=src%2Froutes%2Findex.tsx>
+
 `npm start` (StackBlitz runs it automatically) boots the dev server, streams
 `/control` (no nested boundary → PASS, 2-key group, releases at ~800ms) and `/`
 (nested boundary → FAIL, 3-key group, held to ~2500ms), prints the verdict in
