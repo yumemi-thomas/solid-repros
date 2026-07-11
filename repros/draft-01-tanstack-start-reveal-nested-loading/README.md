@@ -31,6 +31,6 @@ disagreeing with itself between CSR and SSR is the bug.
 Versions: `@tanstack/solid-start@2.0.0-beta.24`, `@tanstack/solid-router@2.0.0-beta.23`,
 `solid-js@2.0.0-beta.17`, `@solidjs/web@2.0.0-beta.17`, `vite-plugin-solid@3.0.0-next.7`.
 
-Issue draft: `issue-drafts/01-reveal-nested-loading-grouping.md` (fix spans
-solid `fix/reveal-nested-boundary-scope` + dom-expressions
-`fix/df-deferred-swap-queue`).
+Issue draft: `issue-drafts/01-reveal-nested-loading-grouping.md` (the fix
+requires paired changes in solidjs/solid — server reveal scope — and
+ryansolid/dom-expressions — deferred `$df` activation queue).
