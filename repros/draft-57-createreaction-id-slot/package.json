@@ -1,0 +1,18 @@
+{
+  "name": "draft-57-createreaction-id-slot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@solidjs/web": "2.0.0-beta.17",
+    "solid-js": "2.0.0-beta.17"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vite-plugin-solid": "next"
+  }
+}

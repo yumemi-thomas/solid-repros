@@ -33,7 +33,7 @@ for (const slug of readdirSync(REPROS)) {
   if (!statSync(dir).isDirectory()) continue;
   const paths = walk(dir).sort();
   const openFile =
-    ["src/repro.jsx", "src/repro.tsx", "src/App.jsx", "src/App.tsx"].find(p => paths.includes(p)) ??
+    ["src/repro.jsx", "src/repro.tsx", "src/App.jsx", "src/App.tsx", "src/index.jsx", "src/index.tsx"].find(p => paths.includes(p)) ??
     "package.json";
   const files = {};
   for (const p of paths) files[p] = readFileSync(join(dir, p), "utf8");
