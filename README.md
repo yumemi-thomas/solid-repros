@@ -34,11 +34,12 @@ node tools/build-manifest.mjs
 
 ## Repros
 
-Solid 2.0 bug-hunt findings. Each runs against published `2.0.0-beta.16` (npm);
-open the link and read the on-screen verdict for client repros or the terminal
-for SSR. All still reproduce on beta.16. `issue-NN` slugs use wave-1 finding
+Solid 2.0 bug-hunt findings. Open the link and read the on-screen verdict for
+client repros or the terminal for SSR. `issue-NN` slugs use wave-1 finding
 numbers; `draft-NN` slugs use the flattened `issue-drafts/` numbering (wave 2+).
-(Wave-1 repros for findings 12 and 15 were dropped — fixed by #2836 and #2840.)
+The early waves below pin `2.0.0-beta.16`; the SSR/client symmetry batch
+(`draft-44`–`draft-73`) pins `2.0.0-beta.17`. All still reproduce on their pinned
+version. (Wave-1 repros for findings 12 and 15 were dropped — fixed by #2836 and #2840.)
 
 Client (in-browser verdict):
 
@@ -57,6 +58,46 @@ SSR (terminal verdict — `npm run repro`):
 - [issue-17 — nested `<Loading>` enrolled in ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=issue-17-ssr-reveal-nested-loading)
 - [draft-01 (TanStack Start) — same bug in a real TanStack Start × Solid 2.0 app; `npm start` prints the verdict and serves the page](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-01-tanstack-start-reveal-nested-loading)
 - [draft-43 (TanStack Start) — `Errored`-wrapped `Loading` joins the `Reveal` group on the server, not on the client](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-43-tanstack-errored-reveal-scope)
+
+## SSR/client symmetry audit (beta.17)
+
+30 reproductions from the [SSR/client rendering-symmetry audit](https://github.com/solidjs/solid) — cases where Solid 2.0's mirrored server implementation diverges from the client runtime. Each is pinned to `2.0.0-beta.17` and self-verifies (`FAIL` = bug reproduced). `❓` marks a design-question repro (shows both behaviors; the intended contract is for maintainers to confirm).
+
+SSR (terminal verdict — `npm run repro`):
+
+- [draft-44 — empty/all-sync nested `<Reveal>` deadlocks the outer `together` group (skeletons forever)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-44-reveal-empty-composite-deadlock)
+- [draft-45 ❓ — `natural` composite readiness: server waits for full resolution, client only minimal](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-45-reveal-natural-composite-readiness)
+- [draft-46 — `createRevealOrder` is a server no-op; its children leak into the ancestor `<Reveal>` group](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-46-createrevealorder-server-noop)
+- [draft-47 — `createEffect` compute throw → SSR renders the `<Errored>` fallback, client renders content](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-47-effect-throw-ssr-fallback)
+- [draft-48 — async projection/store rejection swallowed → seed data streamed as success](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-48-projection-rejection-swallowed)
+- [draft-49 — server `dynamic()` treats a falsy promise rejection as success](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-49-dynamic-falsy-rejection)
+- [draft-52 — projection/derived-store commit uses `Object.assign`, not keyed `reconcile`](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-52-projection-assign-not-reconcile)
+- [draft-53 — store setter return-form is a silent no-op on the server](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-53-store-setter-return-noop)
+- [draft-54 — generator projection SSR state round-trips through JSON (`Date`→string, cyclic crash)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-54-generator-projection-json)
+- [draft-55 — `deep()` returns the live store on the server, not a copy](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-55-deep-returns-live-store)
+- [draft-56 — async memo NotReady retry appends hydration id slots (id drift)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-56-memo-retry-id-drift)
+- [draft-61 — a frozen user promise hangs the SSR stream forever](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-61-frozen-promise-hung-stream)
+- [draft-62 — `<Show>`/`<Match> when={promise}` renders the wrong branch with the raw Promise](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-62-show-match-promise-when)
+- [draft-63 — `<Switch>` with null resolved children crashes SSR (client renders the fallback)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-63-switch-null-children-crash)
+- [draft-65 — `<Portal>` crashes SSR (1.x rendered a no-op)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-65-portal-ssr-crash)
+- [draft-66 — server `dynamic()` evaluates its source once per instance (docs promise sharing)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-66-dynamic-source-per-instance)
+- [draft-67 — server `merge()` drops symbol keys from function sources](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-67-merge-symbol-keys)
+- [draft-68 — server `flush(fn)` silently drops the callback](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-68-flush-callback-dropped)
+- [draft-69 — server `action()()` returns a raw Generator, body never runs](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-69-action-returns-generator)
+- [draft-70 ❓ — `getObserver()` is null in sync scopes / not cleared by `untrack` on the server](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-70-getobserver-sync-scope)
+- [draft-71 — writable memo: `lazy` dropped (eager SSR compute), setter returns `undefined`](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-71-writable-memo-lazy-setter)
+- [draft-72 ❓ — `resolve()` throws on the server while types claim `Promise<T>`](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-72-resolve-server-throw)
+- [draft-73 — `createUniqueId()` outside a reactive context throws server-only](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-73-createuniqueid-outside-context)
+
+Client (in-browser verdict):
+
+- [draft-50 — client `lazy()` fires a phantom `unhandledrejection` on chunk-load failure](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-50-client-lazy-unhandled-rejection)
+- [draft-51 — every SSR-side async rejection leaks 2 `unhandledrejection` events into the browser](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-51-ssr-rejection-client-unhandled)
+- [draft-57 — `createReaction` `track()` id-slot drift → unclaimed nodes / hydration mismatch](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-57-createreaction-id-slot)
+- [draft-58 — server ignores `transparent: true` memo → hydration id drift, dropped update](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-58-transparent-memo-server)
+- [draft-59 — `readHydratedValue` mis-sniffs `{s,v}`/`{v}` payloads (throw / silent corruption)](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-59-readhydratedvalue-envelope)
+- [draft-60 — `$df` fragment swap stops at any comment → fallback debris left in the DOM](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-60-df-comment-scan-debris)
+- [draft-64 — `<Repeat count={NaN}>` throws `RangeError` on the client; SSR renders the fallback](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=draft-64-repeat-count-nan-undefined)
 
 ## Structure
 
@@ -84,9 +125,10 @@ solid-repros/
 - **Minimal:** the smallest program that shows the bug; show observed vs.
   expected on screen or in the console.
 - **Solid version:** these repros pin `solid-js` + `@solidjs/web` to an exact
-  Solid 2.0 release (currently `2.0.0-beta.16`) for durability, with
-  `vite-plugin-solid: "next"`. (`"next"` on `solid-js`/`@solidjs/web` also works
-  and floats to the latest beta.) For a Solid 1.x repro, use `solid-js: "latest"`
+  Solid 2.0 release for durability (early waves `2.0.0-beta.16`; the SSR/client
+  symmetry batch `2.0.0-beta.17`), with `vite-plugin-solid: "next"`. (`"next"` on
+  `solid-js`/`@solidjs/web` also works and floats to the latest beta.) For a Solid
+  1.x repro, use `solid-js: "latest"`
   with `vite-plugin-solid: "latest"` and import `render` from `solid-js/web`
   (drop `@solidjs/web`).
 
