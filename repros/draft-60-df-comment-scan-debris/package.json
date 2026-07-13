@@ -3,16 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "node server.mjs",
+    "start": "node server.mjs"
   },
   "dependencies": {
     "@solidjs/web": "2.0.0-beta.17",
     "solid-js": "2.0.0-beta.17"
   },
   "devDependencies": {
-    "vite": "^6.0.0",
-    "vite-plugin-solid": "next"
+    "vite": "^7.0.0",
+    "vite-plugin-solid": "3.0.0-next.7"
   }
 }
