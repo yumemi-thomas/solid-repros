@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/solid-router'
+import { HeadContent, createRootRoute } from '@tanstack/solid-router'
 import { HydrationScript } from '@solidjs/web'
 import type { JSX } from '@solidjs/web'
 
@@ -23,7 +23,6 @@ function RootDocument(props: { children: JSX.Element }) {
       <body>
         <HeadContent />
         {props.children}
-        <Scripts />
       </body>
     </html>
   )
