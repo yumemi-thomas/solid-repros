@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
-    "start": "node server.mjs"
+    "dev": "node scripts/repro.mjs",
+    "start": "node scripts/repro.mjs",
+    "repro": "node scripts/repro.mjs",
+    "dev:server-only": "vite dev"
   },
   "dependencies": {
     "@solidjs/web": "2.0.0-beta.17",
+    "@tanstack/solid-router": "2.0.0-beta.23",
+    "@tanstack/solid-start": "2.0.0-beta.24",
     "solid-js": "2.0.0-beta.17"
   },
   "devDependencies": {

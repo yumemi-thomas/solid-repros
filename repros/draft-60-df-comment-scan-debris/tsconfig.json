@@ -1,14 +1,12 @@
 {
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "allowJs": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "jsx": "preserve",
-    // Solid 2.0: JSX types live in the renderer package (@solidjs/web), not solid-js.
     "jsxImportSource": "@solidjs/web",
     "types": ["vite/client"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
