@@ -9,6 +9,7 @@ function ArticleAnalytics() {
   return (
     <article data-content>
       <h2>Hello Solid</h2>
+      <p data-result="pass">PASS — content rendered and the effect handled its own error.</p>
     </article>
   );
 }
@@ -18,7 +19,13 @@ function Home() {
     <main>
       <h1>Article</h1>
       <p>Expected: the analytics effect handles its own error and the article still renders.</p>
-      <Errored fallback={<p data-effect-fallback>Something went wrong</p>}>
+      <Errored
+        fallback={
+          <p data-effect-fallback data-result="fail">
+            BUG REPRODUCED — SSR routed the effect error into the UI boundary.
+          </p>
+        }
+      >
         <ArticleAnalytics />
       </Errored>
     </main>

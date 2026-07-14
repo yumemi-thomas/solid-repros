@@ -10,14 +10,24 @@ function Checkout() {
     },
     { total: "$0.00" }
   );
-  return <p data-seed>Total: {prices.total}</p>;
+  return (
+    <p data-seed data-result="fail">
+      BUG REPRODUCED — failed pricing request rendered seed total: {prices.total}
+    </p>
+  );
 }
 function Home() {
   return (
     <main>
       <h1>Checkout</h1>
       <p>Expected: a failed pricing request reaches the error fallback.</p>
-      <Errored fallback={<p data-pricing-error>Pricing unavailable</p>}>
+      <Errored
+        fallback={
+          <p data-pricing-error data-result="pass">
+            PASS — Pricing unavailable fallback rendered.
+          </p>
+        }
+      >
         <Loading fallback={<p>Loading prices…</p>}>
           <Checkout />
         </Loading>

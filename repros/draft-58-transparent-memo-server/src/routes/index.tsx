@@ -17,6 +17,8 @@ function Home() {
       )
     );
   });
+  const status = () =>
+    verdict().startsWith("PASS") ? "pass" : verdict().startsWith("FAIL") ? "fail" : "pending";
   return (
     <main>
       <h1>Live dashboard card</h1>
@@ -27,7 +29,7 @@ function Home() {
         <b>{label()}</b>
         <span ref={value}>after {count()}</span>
       </div>
-      <pre id="browser-verdict" data-result={verdict().startsWith("PASS") ? "pass" : "fail"}>
+      <pre id="browser-verdict" data-result={status()}>
         {verdict()}
       </pre>
     </main>

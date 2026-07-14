@@ -22,8 +22,8 @@ function Home() {
       <List label="Zero control" count={0} />
       <List label="Configuration pending" count={undefined} />
       <List label="Invalid layout measurement" count={Number.NaN} />
-      <pre id="browser-verdict">
-        Waiting for hydration; a RangeError here is the reproduced bug.
+      <pre id="browser-verdict" data-result="pending">
+        Checking hydration… a RangeError will turn this result red.
       </pre>
     </main>
   );

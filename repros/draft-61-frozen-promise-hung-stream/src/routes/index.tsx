@@ -12,7 +12,13 @@ function Home() {
     <main>
       <h1>Immutable cache result</h1>
       <p>A cache may freeze the Promise it returns; the stream should still finish.</p>
-      <Loading fallback={<p>Loading report…</p>}>
+      <Loading
+        fallback={
+          <p data-result="pending" data-timeout-result="1200">
+            Waiting for the frozen Promise… this turns red if the stream remains stuck.
+          </p>
+        }
+      >
         <Report />
       </Loading>
     </main>

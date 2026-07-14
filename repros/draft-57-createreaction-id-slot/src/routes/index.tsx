@@ -18,8 +18,8 @@ function Home() {
         <p data-stats>{stats()}</p>
       </Loading>
       <button onClick={() => setRefreshes(value => value + 1)}>Refresh filters</button>
-      <pre id="browser-verdict">
-        Waiting for hydration. A hydration guard error or unclaimed-node warning reproduces the bug.
+      <pre id="browser-verdict" data-result="pending">
+        Checking hydration… a guard error or unclaimed-node warning will turn this result red.
       </pre>
     </main>
   );

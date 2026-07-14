@@ -18,6 +18,10 @@ function Home() {
       <h1>Report card</h1>
       <p>Falsy first entries should be skipped without leading separators.</p>
       <ReportCard />
+      <p data-result="fail">
+        BUG REPRODUCED — the SSR attribute string starts with separators before the first emitted
+        class/style entry. The red card makes the affected attributes easy to inspect.
+      </p>
     </main>
   );
 }

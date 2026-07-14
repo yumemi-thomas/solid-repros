@@ -6,18 +6,18 @@ const later = <T,>(value: T, ms: number) =>
 function LastSyncedChip() {
   const value = createMemo(async () => later("just now", 1200));
   return (
-    <small>
+    <small data-timing="chip">
       last synced: <Loading fallback={<span>…</span>}>{value()}</Loading>
     </small>
   );
 }
 function Statement() {
   const value = createMemo(async () => later("$1,284.50 due July 28", 200));
-  return <p>{value()}</p>;
+  return <p data-timing="statement">{value()}</p>;
 }
 function Account() {
   const value = createMemo(async () => later("Premium · Autopay on", 100));
-  return <aside>{value()}</aside>;
+  return <aside data-timing="account">{value()}</aside>;
 }
 function Home() {
   return (
@@ -27,6 +27,15 @@ function Home() {
         The statement and account should reveal together at ~200ms. The chip inside a discarded
         fallback must not hold them to ~1.2s.
       </p>
+      <pre
+        data-timing-verdict
+        data-fast="statement,account"
+        data-max-fast="700"
+        data-result="pending"
+      >
+        Watching the streamed UI… expected statement/account before 700ms, without waiting for the
+        discarded chip.
+      </pre>
       <Reveal order="together">
         <Loading
           fallback={

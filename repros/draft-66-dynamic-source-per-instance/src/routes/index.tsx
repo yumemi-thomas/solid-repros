@@ -7,13 +7,17 @@ const SharedSlot = dynamic(() => {
   return () => <b>A</b>;
 });
 function Home() {
+  const ok = () => calls === 1;
   return (
     <main>
       <h1>Shared dashboard widget</h1>
+      <p>Three instances should share one dynamic source evaluation.</p>
       <div>
         <SharedSlot /> | <SharedSlot /> | <SharedSlot />
       </div>
-      <p data-source-calls={calls}>Source evaluations: {calls} (expected 1)</p>
+      <p data-source-calls={calls} data-result={ok() ? "pass" : "fail"}>
+        {ok() ? "PASS" : "BUG REPRODUCED"} — source evaluated {calls} time(s), expected 1.
+      </p>
     </main>
   );
 }

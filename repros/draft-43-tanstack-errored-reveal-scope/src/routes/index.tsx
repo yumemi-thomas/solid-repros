@@ -7,7 +7,7 @@ const later = <T,>(value: T, ms: number) =>
 function OrderSummary() {
   const order = createMemo(async () => later("Order #4021 — Trail Pack 40L, $149", 300));
   return (
-    <section>
+    <section data-timing="order">
       <h1>{order()}</h1>
     </section>
   );
@@ -18,7 +18,7 @@ function OrderSummary() {
 // any route with an errorComponent.
 function PaymentOptions() {
   const options = createMemo(async () => later("Pay with: Card · Konbini · PayPay", 2000));
-  return <aside>{options()}</aside>;
+  return <aside data-timing="payment">{options()}</aside>;
 }
 
 function Home() {
@@ -30,6 +30,15 @@ function Home() {
         reveals on its own, panel (2000ms) independently. The server enrolls it: hard refresh holds
         everything on skeletons to ~2s.
       </p>
+      <pre
+        data-timing-verdict
+        data-fast="order"
+        data-slow="payment"
+        data-min-gap="1000"
+        data-result="pending"
+      >
+        Watching the streamed UI… expected the order near 300ms and payment near 2000ms.
+      </pre>
       <Reveal order="together">
         <Loading fallback={<p style="color:gray">loading order…</p>}>
           <OrderSummary />

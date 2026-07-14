@@ -11,12 +11,18 @@ function Reviews() {
 }
 function Home() {
   const [events, setEvents] = createSignal<string[]>([]);
+  const [checked, setChecked] = createSignal(false);
   onSettled(() => {
     const update = () => setEvents([...(window as any).__reproEvents]);
     update();
     const timer = window.setInterval(update, 50);
-    return () => window.clearInterval(timer);
+    const settled = window.setTimeout(() => setChecked(true), 700);
+    return () => {
+      window.clearInterval(timer);
+      window.clearTimeout(settled);
+    };
   });
+  const status = () => (events().length > 0 ? "fail" : checked() ? "pass" : "pending");
   return (
     <main>
       <h1>Product reviews</h1>
@@ -34,10 +40,12 @@ function Home() {
         </Loading>
       </Errored>
       <p>Global browser errors: {events().length}</p>
-      <pre id="browser-verdict" data-result={events().length === 0 ? "pass" : "fail"}>
-        {events().length === 0
-          ? "PASS — no phantom browser rejection"
-          : "FAIL — " + events().length + " global rejection(s): " + events().join(" | ")}
+      <pre id="browser-verdict" data-result={status()}>
+        {events().length > 0
+          ? "BUG REPRODUCED — " + events().length + " global rejection(s): " + events().join(" | ")
+          : checked()
+            ? "PASS — no phantom browser rejection"
+            : "Checking browser-level promise rejections…"}
       </pre>
     </main>
   );
