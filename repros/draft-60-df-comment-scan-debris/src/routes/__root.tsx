@@ -1,18 +1,18 @@
 /// <reference types="vite/client" />
-import { HeadContent, createRootRoute } from '@tanstack/solid-router'
-import { HydrationScript } from '@solidjs/web'
-import type { JSX } from '@solidjs/web'
+import { HeadContent, createRootRoute } from "@tanstack/solid-router";
+import { HydrationScript } from "@solidjs/web";
+import type { JSX } from "@solidjs/web";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'TanStack Start × Solid 2 — streamed fallback debris repro' },
-    ],
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "TanStack Start × Solid 2 — streamed fallback debris repro" }
+    ]
   }),
-  shellComponent: RootDocument,
-})
+  shellComponent: RootDocument
+});
 
 function RootDocument(props: { children: JSX.Element }) {
   return (
@@ -25,5 +25,5 @@ function RootDocument(props: { children: JSX.Element }) {
         {props.children}
       </body>
     </html>
-  )
+  );
 }

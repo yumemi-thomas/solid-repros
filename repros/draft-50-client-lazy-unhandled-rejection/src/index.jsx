@@ -21,9 +21,7 @@ const host = document.getElementById("app");
 
 const failingImport = () =>
   Promise.reject(
-    new TypeError(
-      "Failed to fetch dynamically imported module: /assets/Settings-Cf1qP2Jk.js"
-    )
+    new TypeError("Failed to fetch dynamically imported module: /assets/Settings-Cf1qP2Jk.js")
   );
 
 const rejections = [];
@@ -75,7 +73,7 @@ setTimeout(async () => {
       `preload path — unhandled rejections: ${preloadRejections}`,
       total === 0
         ? "PASS — no phantom global rejections"
-        : `FAIL — bug reproduced: failed chunk loads spam unhandledrejection (${total} total) even though the UI recovered and the caller caught the preload failure`,
+        : `FAIL — bug reproduced: failed chunk loads spam unhandledrejection (${total} total) even though the UI recovered and the caller caught the preload failure`
     ]);
   }, 100);
 }, 100);

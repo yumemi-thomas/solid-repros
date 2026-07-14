@@ -1,8 +1,5 @@
 {
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
     "strict": true,
     "target": "ESNext",
@@ -10,14 +7,8 @@
     "moduleResolution": "Bundler",
     "jsx": "preserve",
     "jsxImportSource": "@solidjs/web",
-    "types": [
-      "vite/client"
-    ],
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "types": ["vite/client"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
     "noEmit": true,
     "isolatedModules": true

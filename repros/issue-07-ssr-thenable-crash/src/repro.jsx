@@ -13,11 +13,8 @@ import { createMemo, Loading } from "solid-js";
 function query() {
   return {
     then(onFulfilled, onRejected) {
-      return new Promise((r) => setTimeout(() => r("Ada"), 10)).then(
-        onFulfilled,
-        onRejected
-      );
-    },
+      return new Promise(r => setTimeout(() => r("Ada"), 10)).then(onFulfilled, onRejected);
+    }
   };
 }
 
@@ -47,8 +44,5 @@ const ok = !crashed && html.includes("Ada");
 console.log("=== SSR non-Promise thenable crash (server-only) ===");
 console.log(ok ? "PASS — bug fixed" : "FAIL — bug reproduced");
 console.log('expected: renders "Hello Ada" (server awaits the thenable like the client)');
-console.log(
-  "actual:  ",
-  crashed ? `crashed: ${error?.name}: ${error?.message}` : `html: ${html}`
-);
+console.log("actual:  ", crashed ? `crashed: ${error?.name}: ${error?.message}` : `html: ${html}`);
 if (crashed) console.error(error);

@@ -33,13 +33,28 @@ for (const slug of readdirSync(REPROS)) {
   if (!statSync(dir).isDirectory()) continue;
   const paths = walk(dir).sort();
   const openFile =
-    ["src/repro.jsx", "src/repro.tsx", "src/App.jsx", "src/App.tsx", "src/index.jsx", "src/index.tsx"].find(p => paths.includes(p)) ??
-    "package.json";
+    [
+      "src/repro.jsx",
+      "src/repro.tsx",
+      "src/App.jsx",
+      "src/App.tsx",
+      "src/index.jsx",
+      "src/index.tsx"
+    ].find(p => paths.includes(p)) ?? "package.json";
   const files = {};
   for (const p of paths) files[p] = readFileSync(join(dir, p), "utf8");
-  repros[slug] = { title: slug, openFile, kind: openFile.startsWith("src/repro.") ? "ssr" : "client", files };
+  repros[slug] = {
+    title: slug,
+    openFile,
+    kind: openFile.startsWith("src/repro.") ? "ssr" : "client",
+    files
+  };
 }
 
-writeFileSync(join(OUT, "repros.json"), JSON.stringify({ owner: "yumemi-thomas", repo: "solid-repros", branch: "main", repros }) + "\n");
+writeFileSync(
+  join(OUT, "repros.json"),
+  JSON.stringify({ owner: "yumemi-thomas", repo: "solid-repros", branch: "main", repros }) + "\n"
+);
 console.log(`wrote docs/repros.json (${Object.keys(repros).length} repros)`);
-for (const [slug, r] of Object.entries(repros)) console.log(`  ${slug}: ${Object.keys(r.files).length} files, open=${r.openFile}`);
+for (const [slug, r] of Object.entries(repros))
+  console.log(`  ${slug}: ${Object.keys(r.files).length} files, open=${r.openFile}`);

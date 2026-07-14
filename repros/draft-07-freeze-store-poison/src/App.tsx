@@ -19,7 +19,8 @@ export default function App() {
     try {
       const keys = Object.keys(settings).sort().join(",");
       const spread = JSON.stringify({ ...settings });
-      enumerationOk = keys === "density,theme" && spread === '{"theme":"system","density":"compact"}';
+      enumerationOk =
+        keys === "density,theme" && spread === '{"theme":"system","density":"compact"}';
       enumeration = `keys=[${keys}], spread=${spread}`;
     } catch (e) {
       enumeration = `Object.keys(settings) threw: ${String(e)}`;

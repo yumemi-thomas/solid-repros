@@ -1,67 +1,100 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Open repro in StackBlitz</title>
-  <style>
-    body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 42rem; padding: 0 1rem; color: #dde; background: #0e1116; }
-    a { color: #7cc; } code { color: #9fd; }
-    .err { color: #f77; } .muted { color: #889; }
-    button { font: inherit; padding: .6rem 1rem; border: 1px solid #7cc; background: transparent; color: #7cc; border-radius: 6px; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <h1 id="title">Loading repro…</h1>
-  <p id="status" class="muted">Fetching files from GitHub…</p>
-  <p id="fallback" style="display:none"><button id="go">Open in StackBlitz</button></p>
-  <p class="muted">Files come from the manifest (served by GitHub Pages) and are
-    POSTed straight into StackBlitz — no repo import, no rate-limited fetches.
-    <a href="./">All repros</a>.</p>
-
-  <script type="module">
-    const RUN = "https://stackblitz.com/run";
-    const params = new URLSearchParams(location.search);
-    const slug = params.get("repro");
-    const statusEl = document.getElementById("status");
-    const titleEl = document.getElementById("title");
-    const fail = msg => { statusEl.innerHTML = `<span class="err">${msg}</span>`; };
-
-    async function main() {
-      if (!slug) return fail('Missing <code>?repro=&lt;slug&gt;</code>. See <a href="./">the index</a>.');
-      // One same-origin fetch from the Pages CDN — no raw.githubusercontent (429-prone).
-      // no-store: never read a stale cached manifest (old array-format → numbered files).
-      const { repros } = await fetch("./repros.json", { cache: "no-store" }).then(r => r.json());
-      const entry = repros[slug];
-      if (!entry) return fail(`Unknown repro <code>${slug}</code>. See <a href="./">the index</a>.`);
-      titleEl.textContent = entry.title;
-
-      if (!entry.files || typeof entry.files !== "object" || Array.isArray(entry.files)) {
-        return fail("Stale manifest (files not embedded). Hard-refresh this page.");
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open repro in StackBlitz</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 3rem auto;
+        max-width: 42rem;
+        padding: 0 1rem;
+        color: #dde;
+        background: #0e1116;
       }
-      const paths = Object.keys(entry.files);
-      // Build the StackBlitz POST form from the embedded file contents.
-      const form = document.createElement("form");
-      form.method = "post";
-      form.action = `${RUN}?file=${encodeURIComponent(entry.openFile)}`;
-      const add = (name, value) => {
-        const i = document.createElement("input");
-        i.type = "hidden"; i.name = name; i.value = value; form.appendChild(i);
+      a {
+        color: #7cc;
+      }
+      code {
+        color: #9fd;
+      }
+      .err {
+        color: #f77;
+      }
+      .muted {
+        color: #889;
+      }
+      button {
+        font: inherit;
+        padding: 0.6rem 1rem;
+        border: 1px solid #7cc;
+        background: transparent;
+        color: #7cc;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Loading repro…</h1>
+    <p id="status" class="muted">Fetching files from GitHub…</p>
+    <p id="fallback" style="display: none"><button id="go">Open in StackBlitz</button></p>
+    <p class="muted">
+      Files come from the manifest (served by GitHub Pages) and are POSTed straight into StackBlitz
+      — no repo import, no rate-limited fetches. <a href="./">All repros</a>.
+    </p>
+
+    <script type="module">
+      const RUN = "https://stackblitz.com/run";
+      const params = new URLSearchParams(location.search);
+      const slug = params.get("repro");
+      const statusEl = document.getElementById("status");
+      const titleEl = document.getElementById("title");
+      const fail = msg => {
+        statusEl.innerHTML = `<span class="err">${msg}</span>`;
       };
-      add("project[title]", entry.title);
-      add("project[description]", `Solid 2.0 repro — ${entry.title}`);
-      add("project[template]", "node");
-      for (const p of paths) add(`project[files][${p}]`, entry.files[p]);
-      document.body.appendChild(form);
 
-      statusEl.textContent = `Loaded ${paths.length} files — opening StackBlitz…`;
-      const submit = () => form.submit();
-      document.getElementById("go").onclick = submit;
-      document.getElementById("fallback").style.display = "";
-      submit();
-    }
+      async function main() {
+        if (!slug)
+          return fail('Missing <code>?repro=&lt;slug&gt;</code>. See <a href="./">the index</a>.');
+        // One same-origin fetch from the Pages CDN — no raw.githubusercontent (429-prone).
+        // no-store: never read a stale cached manifest (old array-format → numbered files).
+        const { repros } = await fetch("./repros.json", { cache: "no-store" }).then(r => r.json());
+        const entry = repros[slug];
+        if (!entry)
+          return fail(`Unknown repro <code>${slug}</code>. See <a href="./">the index</a>.`);
+        titleEl.textContent = entry.title;
 
-    main().catch(e => fail(`Failed to load repro: ${e.message}`));
-  </script>
-</body>
+        if (!entry.files || typeof entry.files !== "object" || Array.isArray(entry.files)) {
+          return fail("Stale manifest (files not embedded). Hard-refresh this page.");
+        }
+        const paths = Object.keys(entry.files);
+        // Build the StackBlitz POST form from the embedded file contents.
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = `${RUN}?file=${encodeURIComponent(entry.openFile)}`;
+        const add = (name, value) => {
+          const i = document.createElement("input");
+          i.type = "hidden";
+          i.name = name;
+          i.value = value;
+          form.appendChild(i);
+        };
+        add("project[title]", entry.title);
+        add("project[description]", `Solid 2.0 repro — ${entry.title}`);
+        add("project[template]", "node");
+        for (const p of paths) add(`project[files][${p}]`, entry.files[p]);
+        document.body.appendChild(form);
+
+        statusEl.textContent = `Loaded ${paths.length} files — opening StackBlitz…`;
+        const submit = () => form.submit();
+        document.getElementById("go").onclick = submit;
+        document.getElementById("fallback").style.display = "";
+        submit();
+      }
+
+      main().catch(e => fail(`Failed to load repro: ${e.message}`));
+    </script>
+  </body>
 </html>

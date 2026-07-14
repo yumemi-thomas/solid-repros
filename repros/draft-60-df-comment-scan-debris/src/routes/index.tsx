@@ -1,12 +1,12 @@
-import { createFileRoute } from '@tanstack/solid-router'
-import { createMemo, createSignal, Loading } from 'solid-js'
+import { createFileRoute } from "@tanstack/solid-router";
+import { createMemo, createSignal, Loading } from "solid-js";
 
 const later = <T,>(value: T, ms: number) =>
-  new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
+  new Promise<T>(resolve => setTimeout(() => resolve(value), ms));
 
 function Home() {
-  const [progress] = createSignal(42)
-  const report = createMemo(async () => later('Download ready', 1200))
+  const [progress] = createSignal(42);
+  const report = createMemo(async () => later("Download ready", 1200));
 
   return (
     <main style="max-width: 48rem; margin: 4rem auto; padding: 0 1.5rem; font-family: system-ui; color: #18181b">
@@ -37,14 +37,16 @@ function Home() {
       </div>
 
       <p style="margin: 1rem 0 0; padding: 0.875rem 1rem; border-left: 4px solid #dc2626; background: #fafafa">
-        <strong>Bug:</strong> <code>42% complete</code> is stale fallback text left behind by <code>$df</code>.
+        <strong>Bug:</strong> <code>42% complete</code> is stale fallback text left behind by{" "}
+        <code>$df</code>.
       </p>
 
       <p style="margin-top: 1.5rem; color: #71717a; font-size: 0.875rem">
-        Client hydration is intentionally omitted so the real server-stream mutation remains visible.
+        Client hydration is intentionally omitted so the real server-stream mutation remains
+        visible.
       </p>
     </main>
-  )
+  );
 }
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute("/")({ component: Home });

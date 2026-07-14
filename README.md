@@ -50,10 +50,10 @@ version. (Wave-1 repros for findings 12 and 15 were dropped — fixed by #2836 a
 
 All 63 active drafts (64 findings; draft 25 contains two) have a standalone project:
 
-| Runtime | Active drafts | Repro shape |
-|---|---|---|
-| Browser | `02–09`, `13–22`, `33–35`, `37–41`, `50` | Small interactive Vite app with an on-page result |
-| Hydration | `26–32` | Vite app using the real hydration runtime and visible diagnostics |
+| Runtime               | Active drafts                                              | Repro shape                                                                              |
+| --------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Browser               | `02–09`, `13–22`, `33–35`, `37–41`, `50`                   | Small interactive Vite app with an on-page result                                        |
+| Hydration             | `26–32`                                                    | Vite app using the real hydration runtime and visible diagnostics                        |
 | SSR / SSR + hydration | `23`, `25`, `42`, `43`, `46–49`, `51–59`, `61–64`, `66–73` | Real TanStack Start route; hybrid cases include `<Scripts />` and hydrate in the browser |
 
 Drafts `01`, `44`, `45`, `60`, and `65` are resolved and retained only as

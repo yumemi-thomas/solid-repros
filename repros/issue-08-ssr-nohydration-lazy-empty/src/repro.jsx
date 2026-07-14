@@ -8,7 +8,7 @@ import { renderToStringAsync, NoHydration } from "@solidjs/web";
 import { lazy } from "solid-js";
 
 const StaticFooter = lazy(async () => ({
-  default: () => <p>static lazy content</p>,
+  default: () => <p>static lazy content</p>
 }));
 
 function App() {

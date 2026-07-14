@@ -10,11 +10,14 @@ export default function App() {
   let same: boolean | undefined;
   let includes: boolean | undefined;
   let index: number | undefined;
-  const projected = createProjection((draft: { id: number }[]) => {
-    same = draft[0] === draft[0];        // expected true
-    includes = draft.includes(draft[0]); // expected true
-    index = draft.indexOf(draft[0]);     // expected 0
-  }, [{ id: 1 }]);
+  const projected = createProjection(
+    (draft: { id: number }[]) => {
+      same = draft[0] === draft[0]; // expected true
+      includes = draft.includes(draft[0]); // expected true
+      index = draft.indexOf(draft[0]); // expected 0
+    },
+    [{ id: 1 }]
+  );
 
   // plain store draft (control: behaves correctly)
   let sSame: boolean | undefined;

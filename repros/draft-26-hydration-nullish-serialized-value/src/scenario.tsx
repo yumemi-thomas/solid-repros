@@ -14,9 +14,12 @@ let result: unknown;
 // Case 1: resolved async envelope — the server's async memo resolved to null
 // ("no active coupon"), serialized as { v: null, s: 1 }.
 startHydration({ t0: { v: null, s: 1 } });
-createRoot(() => {
-  result = createMemo(() => "client")();
-}, { id: "t" });
+createRoot(
+  () => {
+    result = createMemo(() => "client")();
+  },
+  { id: "t" }
+);
 flush();
 console.log(
   "memo adopts serialized null:",
@@ -26,12 +29,15 @@ console.log(
 // Case 2: direct serialized null — the value itself was serialized as null.
 startHydration({ t0: null });
 let calls = 0;
-createRoot(() => {
-  result = createMemo(() => {
-    calls++;
-    return "client";
-  })();
-}, { id: "t" });
+createRoot(
+  () => {
+    result = createMemo(() => {
+      calls++;
+      return "client";
+    })();
+  },
+  { id: "t" }
+);
 flush();
 console.log(
   "direct serialized null adopted:",

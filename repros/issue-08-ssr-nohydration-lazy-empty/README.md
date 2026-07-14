@@ -2,7 +2,7 @@
 
 `lazy()` inside `<NoHydration>` silently renders **nothing** during SSR. The
 moduleUrl/manifest requirements are correctly waived for no-hydrate zones, but
-the server `lazy()` wrapper bails out *before* creating the render memo, so the
+the server `lazy()` wrapper bails out _before_ creating the render memo, so the
 resolved content is dropped — leaving an empty hole. The stream still completes
 "successfully".
 

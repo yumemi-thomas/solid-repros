@@ -81,8 +81,8 @@ export default function App() {
       <h2>Async iterator that rejects synchronously</h2>
       <Result status={status()} />
       <p style={{ color: "#666" }}>
-        A synchronous iterator rejection should reach the error boundary (like the
-        promise-shaped sync rejection does), not stay pending forever.
+        A synchronous iterator rejection should reach the error boundary (like the promise-shaped
+        sync rejection does), not stay pending forever.
       </p>
     </div>
   );

@@ -8,79 +8,79 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as ControlRouteImport } from './routes/control'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as ControlRouteImport } from "./routes/control";
+import { Route as IndexRouteImport } from "./routes/index";
 
 const ControlRoute = ControlRouteImport.update({
-  id: '/control',
-  path: '/control',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  id: "/control",
+  path: "/control",
+  getParentRoute: () => rootRouteImport
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  id: "/",
+  path: "/",
+  getParentRoute: () => rootRouteImport
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/control': typeof ControlRoute
+  "/": typeof IndexRoute;
+  "/control": typeof ControlRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/control': typeof ControlRoute
+  "/": typeof IndexRoute;
+  "/control": typeof ControlRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/control': typeof ControlRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/control": typeof ControlRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control'
-  id: '__root__' | '/' | '/control'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "/" | "/control";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/" | "/control";
+  id: "__root__" | "/" | "/control";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ControlRoute: typeof ControlRoute
+  IndexRoute: typeof IndexRoute;
+  ControlRoute: typeof ControlRoute;
 }
 
-declare module '@tanstack/solid-router' {
+declare module "@tanstack/solid-router" {
   interface FileRoutesByPath {
-    '/control': {
-      id: '/control'
-      path: '/control'
-      fullPath: '/control'
-      preLoaderRoute: typeof ControlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/control": {
+      id: "/control";
+      path: "/control";
+      fullPath: "/control";
+      preLoaderRoute: typeof ControlRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ControlRoute: ControlRoute,
-}
+  ControlRoute: ControlRoute
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/solid-start'
-declare module '@tanstack/solid-start' {
+import type { getRouter } from "./router.tsx";
+import type { createStart } from "@tanstack/solid-start";
+declare module "@tanstack/solid-start" {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

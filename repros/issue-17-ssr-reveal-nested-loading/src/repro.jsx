@@ -8,8 +8,7 @@
 import { renderToStream } from "@solidjs/web";
 import { createMemo, Loading, Reveal } from "solid-js";
 
-const asyncValue = (value, ms) =>
-  new Promise((r) => setTimeout(() => r(value), ms));
+const asyncValue = (value, ms) => new Promise(r => setTimeout(() => r(value), ms));
 
 function Inner() {
   const slow = createMemo(async () => asyncValue("inner-slow", 80));
@@ -38,7 +37,7 @@ function App() {
   );
 }
 
-const chunks = await new Promise((resolve) => {
+const chunks = await new Promise(resolve => {
   const acc = [];
   renderToStream(() => <App />).pipe({
     write(chunk) {
@@ -46,7 +45,7 @@ const chunks = await new Promise((resolve) => {
     },
     end() {
       resolve(acc);
-    },
+    }
   });
 });
 
@@ -57,16 +56,14 @@ const full = chunks.join("");
 // nested inner boundary was (incorrectly) enrolled, $dfj carries two keys and
 // the ready outer content stays hidden behind its fallback until the slow inner
 // data arrives.
-const groupCalls = [...full.matchAll(/\$dfj\((\[[^\]]*\])\)/g)].map((m) =>
-  JSON.parse(m[1])
-);
-const badGroup = groupCalls.find((keys) => keys.length !== 1);
+const groupCalls = [...full.matchAll(/\$dfj\((\[[^\]]*\])\)/g)].map(m => JSON.parse(m[1]));
+const badGroup = groupCalls.find(keys => keys.length !== 1);
 
 // Temporal check: the outer activation should stream BEFORE the slow inner
 // template — not be gated behind it.
-const activationIdx = chunks.findIndex((c) => c.includes("$dfj"));
+const activationIdx = chunks.findIndex(c => c.includes("$dfj"));
 const innerTemplateIdx = chunks.findIndex(
-  (c) => /<template id="(?!pl-)[^"]*"/.test(c) && c.includes("inner-slow")
+  c => /<template id="(?!pl-)[^"]*"/.test(c) && c.includes("inner-slow")
 );
 const outerGatedByInner =
   activationIdx > -1 && innerTemplateIdx > -1 && activationIdx > innerTemplateIdx;

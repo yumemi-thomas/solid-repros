@@ -33,9 +33,7 @@ export default function App() {
   return (
     <main style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>Throwing effect drops sibling effects</h2>
-      <p>
-        A throw in one effect should not drop other effects' updates queued in the same flush.
-      </p>
+      <p>A throw in one effect should not drop other effects' updates queued in the same flush.</p>
       <button onClick={navigate}>navigate</button>
       <Show when={verdict()}>
         {v => (

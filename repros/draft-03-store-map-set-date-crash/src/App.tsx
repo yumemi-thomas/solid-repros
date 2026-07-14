@@ -48,7 +48,10 @@ export default function App() {
       },
       // Controls: generic prototype methods work today (the read path binds them).
       { label: 'control usersById.get("u1")', run: () => store.usersById.get("u1") === "Ada" },
-      { label: "control trialEndsAt.getTime()", run: () => Number.isFinite(store.trialEndsAt.getTime()) }
+      {
+        label: "control trialEndsAt.getTime()",
+        run: () => Number.isFinite(store.trialEndsAt.getTime())
+      }
     ];
 
     const lines = cases.map(c => {
@@ -64,7 +67,9 @@ export default function App() {
   return (
     <main style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>Map/Set/Date values in a store</h2>
-      <p>cached user u1: {store.usersById.get("u1")} (generic Map.get — the read that still works)</p>
+      <p>
+        cached user u1: {store.usersById.get("u1")} (generic Map.get — the read that still works)
+      </p>
       <button onClick={runAllProbes}>run Map/Set/Date probes</button>
       <Show when={verdict()}>
         {v => (

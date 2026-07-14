@@ -1,7 +1,7 @@
 # issue-16 — `createReaction` re-arm accumulates arms
 
 `createReaction` should replace its tracked sources when you re-arm it before it
-fires (1.x semantics). In Solid 2.0 each `track()` adds a *new* deferred arm
+fires (1.x semantics). In Solid 2.0 each `track()` adds a _new_ deferred arm
 without disposing the superseded one, so the reaction fires more than once.
 
 Run `npm run dev` and use the buttons:

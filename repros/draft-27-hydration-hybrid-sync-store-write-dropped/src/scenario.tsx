@@ -19,15 +19,18 @@ function stopHydration() {
 startHydration({ t0: { v: { name: "server" }, s: 1 } });
 
 let store: any;
-createRoot(() => {
-  [store] = createStore(
-    draft => {
-      draft.name = "client"; // synchronous client synchronizer
-    },
-    { name: "initial" },
-    { ssrSource: "hybrid" }
-  );
-}, { id: "t" });
+createRoot(
+  () => {
+    [store] = createStore(
+      draft => {
+        draft.name = "client"; // synchronous client synchronizer
+      },
+      { name: "initial" },
+      { ssrSource: "hybrid" }
+    );
+  },
+  { id: "t" }
+);
 flush();
 console.log(
   "hydrating store adopts server value:",

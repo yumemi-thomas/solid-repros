@@ -10,8 +10,7 @@
 import { renderToStream } from "@solidjs/web";
 import { createMemo, Loading, Reveal } from "solid-js";
 
-const fetchIn = (value, ms) =>
-  new Promise((resolve) => setTimeout(() => resolve(value), ms));
+const fetchIn = (value, ms) => new Promise(resolve => setTimeout(() => resolve(value), ms));
 
 function Profile() {
   const profile = createMemo(async () => fetchIn("Profile", 30));
@@ -49,29 +48,31 @@ function App() {
 
 const started = Date.now();
 const chunks = [];
-await new Promise((resolve) => {
+await new Promise(resolve => {
   renderToStream(() => <App />).pipe({
     write(chunk) {
       chunks.push({ chunk, at: Date.now() - started });
     },
     end() {
       resolve();
-    },
+    }
   });
 });
 
-const findAt = (needle) =>
-  chunks.find((c) =>
-    typeof needle === "string" ? c.chunk.includes(needle) : needle.test(c.chunk),
-  )?.at;
+const findAt = needle =>
+  chunks.find(c => (typeof needle === "string" ? c.chunk.includes(needle) : needle.test(c.chunk)))
+    ?.at;
 
 const profileTemplateAt = findAt("Profile</h1>");
 const fastTemplateAt = findAt("Fast card");
 const slowTemplateAt = findAt("Slow card");
 const activationAt = findAt(/\$dfj\(/);
 const groups = [
-  ...chunks.map((c) => c.chunk).join("").matchAll(/\$dfj\((\[[^\]]*\])\)/g),
-].map((m) => JSON.parse(m[1]));
+  ...chunks
+    .map(c => c.chunk)
+    .join("")
+    .matchAll(/\$dfj\((\[[^\]]*\])\)/g)
+].map(m => JSON.parse(m[1]));
 
 console.log(`profile template   @ ~${profileTemplateAt}ms`);
 console.log(`fast card template @ ~${fastTemplateAt}ms`);
@@ -85,12 +86,10 @@ console.log(`first $dfj         @ ~${activationAt}ms; groups: ${JSON.stringify(g
 // The server never exposes the ~30ms intermediate state above: it holds every
 // direct slot on its skeleton until the slow grandchild resolves at ~120ms.
 
-console.log(
-  "\n=== natural group holds a nested composite until FULL resolution (server-only) ===",
-);
+console.log("\n=== natural group holds a nested composite until FULL resolution (server-only) ===");
 const ok = activationAt != null && slowTemplateAt != null && activationAt < slowTemplateAt;
 console.log(
   ok
     ? "PASS — bug is fixed (outer together released at direct-slot minimal readiness)"
-    : "FAIL — bug reproduced: outer together held until the slow grandchild fully resolved",
+    : "FAIL — bug reproduced: outer together held until the slow grandchild fully resolved"
 );

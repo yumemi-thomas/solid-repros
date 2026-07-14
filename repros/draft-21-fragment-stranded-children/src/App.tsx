@@ -35,7 +35,8 @@ export default function App() {
       ok: cases.every(c => c.actual === c.expected),
       actual: cases
         .map(
-          c => `${c.label}: expected ${JSON.stringify(c.expected)}, actual ${JSON.stringify(c.actual)}`
+          c =>
+            `${c.label}: expected ${JSON.stringify(c.expected)}, actual ${JSON.stringify(c.actual)}`
         )
         .join("\n")
     });

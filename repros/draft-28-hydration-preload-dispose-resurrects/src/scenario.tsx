@@ -18,7 +18,11 @@ container.innerHTML = "<div _hk=0><button>Subscribe</button></div>";
 
 const clicks: string[] = [];
 const dispose = hydrate(
-  () => <div><button onClick={() => clicks.push("subscribe")}>Subscribe</button></div>,
+  () => (
+    <div>
+      <button onClick={() => clicks.push("subscribe")}>Subscribe</button>
+    </div>
+  ),
   container
 );
 
@@ -29,7 +33,5 @@ await new Promise(resolve => setTimeout(resolve, 20));
 container.querySelector("button")!.click();
 console.log(
   "disposed root stays inert:",
-  clicks.length === 0
-    ? "PASS"
-    : `FAIL — expected [], got ${JSON.stringify(clicks)}`
+  clicks.length === 0 ? "PASS" : `FAIL — expected [], got ${JSON.stringify(clicks)}`
 );

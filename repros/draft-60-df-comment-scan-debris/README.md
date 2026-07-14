@@ -1,7 +1,7 @@
 # draft-60 — `$df` fragment swap stops at the first comment instead of the matching `<!--pl-X-->`
 
-*(dom-expressions issue — `@dom-expressions/runtime@0.50.0-next.17`, `REPLACE_SCRIPT`;
-consumed by `solid-js@2.0.0-beta.17` streaming SSR.)*
+_(dom-expressions issue — `@dom-expressions/runtime@0.50.0-next.17`, `REPLACE_SCRIPT`;
+consumed by `solid-js@2.0.0-beta.17` streaming SSR.)_
 
 Minimal **TanStack Start** reproduction using the same pinned Solid 2 beta
 integration as `draft-01`. There is no custom server, client entry, hydration
@@ -13,7 +13,8 @@ the `pl-X` placeholder and the matching `<!--pl-X-->` end marker, but its
 removal loop terminates at the **first comment node of any kind**:
 
 ```js
-for(;o&&8!==o.nodeType&&o.nodeValue!=="pl-"+e;)t=o.nextSibling,o.remove(),o=t;
+for (; o && 8 !== o.nodeType && o.nodeValue !== "pl-" + e; )
+  ((t = o.nextSibling), o.remove(), (o = t));
 ```
 
 A realistic inline progress message —

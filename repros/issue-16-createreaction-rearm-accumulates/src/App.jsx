@@ -25,15 +25,22 @@ export default function App() {
   return (
     <main style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>createReaction re-arm accumulates arms</h2>
-      <p>reaction fired: <b>{fired()}</b> time(s)</p>
-      <button onClick={() => { track(() => a()); track(() => b()); }}>
+      <p>
+        reaction fired: <b>{fired()}</b> time(s)
+      </p>
+      <button
+        onClick={() => {
+          track(() => a());
+          track(() => b());
+        }}
+      >
         arm (track a, then b)
       </button>{" "}
       <button onClick={bump(setA, a)}>bump a</button>{" "}
       <button onClick={bump(setB, b)}>bump b</button>
       <p style={{ color: "#666" }}>
-        Arm, then bump a → should stay 0 (a was superseded by track(b)); 2.0
-        shows 1. Then bump b → 1.x total 1, 2.0 total 2: both arms stayed live.
+        Arm, then bump a → should stay 0 (a was superseded by track(b)); 2.0 shows 1. Then bump b →
+        1.x total 1, 2.0 total 2: both arms stayed live.
       </p>
     </main>
   );

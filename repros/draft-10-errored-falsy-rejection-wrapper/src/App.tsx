@@ -15,8 +15,8 @@ export default function App() {
         </Loading>
       </Errored>
       <p style={{ color: "#666" }}>
-        err() should be the original rejection value (undefined), not the framework's
-        internal StatusError wrapper.
+        err() should be the original rejection value (undefined), not the framework's internal
+        StatusError wrapper.
       </p>
     </div>
   );

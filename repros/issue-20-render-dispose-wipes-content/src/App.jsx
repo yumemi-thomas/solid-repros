@@ -16,8 +16,7 @@ function ReviewForm() {
   const [stars, setStars] = createSignal(0);
   return (
     <p>
-      Your rating:{" "}
-      <button onClick={() => setStars(stars() + 1)}>★ {stars()}</button>
+      Your rating: <button onClick={() => setStars(stars() + 1)}>★ {stars()}</button>
     </p>
   );
 }
@@ -51,8 +50,12 @@ export default function App() {
   return (
     <section style={{ padding: "16px" }}>
       <h2>Embeddable reviews island mounted into a host slot</h2>
-      <button onClick={mount} disabled={mounted()}>mount widget</button>{" "}
-      <button onClick={unmount} disabled={!mounted()}>unmount widget</button>
+      <button onClick={mount} disabled={mounted()}>
+        mount widget
+      </button>{" "}
+      <button onClick={unmount} disabled={!mounted()}>
+        unmount widget
+      </button>
       <p style={{ color: slotWiped() ? "#c5221f" : "#666" }}>
         {slotWiped()
           ? "FAIL — unmounting the widget blanked the whole #reviews slot, including the host's heading + summary."

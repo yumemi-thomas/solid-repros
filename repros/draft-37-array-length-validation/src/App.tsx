@@ -74,7 +74,10 @@ export default function App() {
     setVerdict({
       ok: cases.every(c => c.ok),
       report: cases
-        .map(c => `${c.ok ? "PASS" : "FAIL"}  ${c.label}\n  expected: ${c.expected}\n  actual:   ${c.actual}`)
+        .map(
+          c =>
+            `${c.ok ? "PASS" : "FAIL"}  ${c.label}\n  expected: ${c.expected}\n  actual:   ${c.actual}`
+        )
         .join("\n")
     });
   }

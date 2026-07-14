@@ -9,7 +9,7 @@ import { createMemo, Loading, Errored } from "solid-js";
 
 function App(props) {
   const data = createMemo(async () => {
-    await new Promise((r) => setTimeout(r, 10));
+    await new Promise(r => setTimeout(r, 10));
     throw props.reason; // e.g. a bare `Promise.reject()` from a fetch layer
   });
   return (

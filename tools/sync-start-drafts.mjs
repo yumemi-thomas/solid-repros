@@ -1,14 +1,14 @@
 // Build the straightforward SSR issue examples as real TanStack Start apps.
 // Streaming protocol/timing cases keep purpose-built analyzers and are handled
 // separately; these cases can self-verify from the rendered route or HTTP error.
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 
-const ROOT = resolve(import.meta.dirname, '..')
-const DRAFTS = resolve(ROOT, '../solid/issue-drafts')
+const ROOT = resolve(import.meta.dirname, "..");
+const DRAFTS = resolve(ROOT, "../solid/issue-drafts");
 
 const scenarios = {
-  '42-reveal-fallback-loading-scope': `import { createFileRoute } from '@tanstack/solid-router'
+  "42-reveal-fallback-loading-scope": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, Loading, Reveal } from 'solid-js'
 
 const later = <T,>(value: T, ms: number) => new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
@@ -18,7 +18,7 @@ function Account() { const value = createMemo(async () => later('Premium · Auto
 function Home() { return <main><h1>Billing overview</h1><p>The statement and account should reveal together at ~200ms. The chip inside a discarded fallback must not hold them to ~1.2s.</p><Reveal order="together"><Loading fallback={<p>Loading statement… <LastSyncedChip /></p>}><Statement /></Loading><Loading fallback={<p>Loading account…</p>}><Account /></Loading></Reveal></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '46-createrevealorder-server-noop': `import { createFileRoute } from '@tanstack/solid-router'
+  "46-createrevealorder-server-noop": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, createRevealOrder, Loading, Reveal } from 'solid-js'
 
 const later = <T,>(value: T, ms: number) => new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
@@ -28,7 +28,7 @@ function CardGrid() { return createRevealOrder(cards, { order: () => 'natural' }
 function Home() { const hero = createMemo(async () => later('Summer collection', 100)); return <main><h1>Storefront</h1><p>The design-system grid is one nested reveal group; its cards must not become direct members of the page's together group.</p><Reveal order="together"><Loading fallback={<b>Loading hero…</b>}><h2>{hero()}</h2></Loading><CardGrid /></Reveal></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '23-assets-element-crash': `import { createFileRoute } from '@tanstack/solid-router'
+  "23-assets-element-crash": `import { createFileRoute } from '@tanstack/solid-router'
 import { useAssets } from '@solidjs/web'
 
 function SupportWidget() {
@@ -42,7 +42,7 @@ function Home() {
 
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '25-ssr-object-binding-leading-separator': `import { createFileRoute } from '@tanstack/solid-router'
+  "25-ssr-object-binding-leading-separator": `import { createFileRoute } from '@tanstack/solid-router'
 
 function ReportCard() {
   return <article data-card class={{ selected: false, highlighted: true, card: true } as any} style={{ color: undefined, background: 'red' } as any}>Weekly report</article>
@@ -54,7 +54,7 @@ function Home() {
 
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '47-effect-throw-ssr-fallback': `import { createFileRoute } from '@tanstack/solid-router'
+  "47-effect-throw-ssr-fallback": `import { createFileRoute } from '@tanstack/solid-router'
 import { createEffect, Errored } from 'solid-js'
 
 function ArticleAnalytics() {
@@ -71,7 +71,7 @@ function Home() {
 
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '48-projection-rejection-swallowed': `import { createFileRoute } from '@tanstack/solid-router'
+  "48-projection-rejection-swallowed": `import { createFileRoute } from '@tanstack/solid-router'
 import { createStore, Errored, Loading } from 'solid-js'
 
 const later = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -84,7 +84,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '49-dynamic-falsy-rejection': `import { createFileRoute } from '@tanstack/solid-router'
+  "49-dynamic-falsy-rejection": `import { createFileRoute } from '@tanstack/solid-router'
 import { dynamic } from '@solidjs/web'
 import { Errored, Loading } from 'solid-js'
 
@@ -94,7 +94,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '51-ssr-rejection-client-unhandled': `import { createFileRoute } from '@tanstack/solid-router'
+  "51-ssr-rejection-client-unhandled": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, createSignal, Errored, Loading, onSettled } from 'solid-js'
 
 const later = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -114,7 +114,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '52-projection-assign-not-reconcile': `import { createFileRoute } from '@tanstack/solid-router'
+  "52-projection-assign-not-reconcile": `import { createFileRoute } from '@tanstack/solid-router'
 import { createProjection } from 'solid-js'
 
 function Home() {
@@ -125,7 +125,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '53-store-setter-return-noop': `import { createFileRoute } from '@tanstack/solid-router'
+  "53-store-setter-return-noop": `import { createFileRoute } from '@tanstack/solid-router'
 import { createStore, untrack } from 'solid-js'
 
 function Home() {
@@ -136,7 +136,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '54-generator-projection-json': `import { createFileRoute } from '@tanstack/solid-router'
+  "54-generator-projection-json": `import { createFileRoute } from '@tanstack/solid-router'
 import { createProjection, Loading } from 'solid-js'
 
 function Home() {
@@ -146,7 +146,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '55-deep-returns-live-store': `import { createFileRoute } from '@tanstack/solid-router'
+  "55-deep-returns-live-store": `import { createFileRoute } from '@tanstack/solid-router'
 import { createStore, deep, untrack } from 'solid-js'
 
 function Home() {
@@ -158,7 +158,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '56-memo-retry-id-drift': `import { createFileRoute } from '@tanstack/solid-router'
+  "56-memo-retry-id-drift": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, createUniqueId, Loading } from 'solid-js'
 
 const later = <T,>(value: T, ms: number) => new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
@@ -172,7 +172,7 @@ function Profile() {
 function Home() { return <main><h1>Account profile</h1><p>An async retry must reuse the hydration-id slot allocated by its first attempt.</p><Loading fallback={<p>Loading profile…</p>}><Profile /></Loading></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '57-createreaction-id-slot': `import { createFileRoute } from '@tanstack/solid-router'
+  "57-createreaction-id-slot": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, createReaction, createSignal, Loading } from 'solid-js'
 
 const later = <T,>(value: T, ms: number) => new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
@@ -185,7 +185,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '58-transparent-memo-server': `import { createFileRoute } from '@tanstack/solid-router'
+  "58-transparent-memo-server": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, createSignal, flush, onSettled } from 'solid-js'
 
 function Home() {
@@ -202,7 +202,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '59-readhydratedvalue-envelope': `import { createFileRoute } from '@tanstack/solid-router'
+  "59-readhydratedvalue-envelope": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, Errored, Loading } from 'solid-js'
 
 const later = <T,>(value: T) => Promise.resolve(value)
@@ -215,7 +215,7 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '61-frozen-promise-hung-stream': `import { createFileRoute } from '@tanstack/solid-router'
+  "61-frozen-promise-hung-stream": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, Loading } from 'solid-js'
 
 const later = <T,>(value: T, ms: number) => new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
@@ -223,7 +223,7 @@ function Report() { const data = createMemo(() => Object.freeze(later('Report re
 function Home() { return <main><h1>Immutable cache result</h1><p>A cache may freeze the Promise it returns; the stream should still finish.</p><Loading fallback={<p>Loading report…</p>}><Report /></Loading></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '62-show-match-promise-when': `import { createFileRoute } from '@tanstack/solid-router'
+  "62-show-match-promise-when": `import { createFileRoute } from '@tanstack/solid-router'
 import { Loading, Match, Show, Switch } from 'solid-js'
 
 const canEdit = () => Promise.resolve(false)
@@ -232,14 +232,14 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '63-switch-null-children-crash': `import { createFileRoute } from '@tanstack/solid-router'
+  "63-switch-null-children-crash": `import { createFileRoute } from '@tanstack/solid-router'
 import { Match, Switch } from 'solid-js'
 
 function AdminRoutes(props: { isAdmin: boolean }) { return props.isAdmin ? <Match when={true}><p>Admin panel</p></Match> : null }
 function Home() { return <main><h1>Settings</h1><Switch fallback={<p data-not-found>Not found</p>}><AdminRoutes isAdmin={false} /></Switch></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '64-repeat-count-nan-undefined': `import { createFileRoute } from '@tanstack/solid-router'
+  "64-repeat-count-nan-undefined": `import { createFileRoute } from '@tanstack/solid-router'
 import { Repeat } from 'solid-js'
 
 function List(props: { label: string; count: number | undefined }) {
@@ -250,13 +250,13 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '65-portal-ssr-crash': `import { createFileRoute } from '@tanstack/solid-router'
+  "65-portal-ssr-crash": `import { createFileRoute } from '@tanstack/solid-router'
 import { Portal } from '@solidjs/web'
 
 function Home() { return <main><h1>Dashboard</h1><p>The saved toast is portaled after hydration.</p><Portal><div class="toast">Saved!</div></Portal><p data-result="pass">PASS — the route rendered without an SSR crash.</p></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '66-dynamic-source-per-instance': `import { createFileRoute } from '@tanstack/solid-router'
+  "66-dynamic-source-per-instance": `import { createFileRoute } from '@tanstack/solid-router'
 import { dynamic } from '@solidjs/web'
 
 let calls = 0
@@ -264,7 +264,7 @@ const SharedSlot = dynamic(() => { calls++; return () => <b>A</b> })
 function Home() { return <main><h1>Shared dashboard widget</h1><div><SharedSlot /> | <SharedSlot /> | <SharedSlot /></div><p data-source-calls={calls}>Source evaluations: {calls} (expected 1)</p></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '67-merge-symbol-keys': `import { createFileRoute } from '@tanstack/solid-router'
+  "67-merge-symbol-keys": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, merge } from 'solid-js'
 
 const THEME = Symbol.for('ui.theme')
@@ -275,13 +275,13 @@ function Home() {
 }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '68-flush-callback-dropped': `import { createFileRoute } from '@tanstack/solid-router'
+  "68-flush-callback-dropped": `import { createFileRoute } from '@tanstack/solid-router'
 import { flush } from 'solid-js'
 
 function Home() { let prepared = false; const returned = flush(() => { prepared = true; return 'ready' }); const ok = prepared && returned === 'ready'; return <main><h1>Server preparation</h1><p>Callback ran: {String(prepared)}</p><p>Returned: {String(returned)}</p><p data-result={ok ? 'pass' : 'fail'}>{ok ? 'PASS' : 'FAIL'} — flush callback {ok ? 'ran' : 'was dropped'}.</p></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '69-action-returns-generator': `import { createFileRoute } from '@tanstack/solid-router'
+  "69-action-returns-generator": `import { createFileRoute } from '@tanstack/solid-router'
 import { action } from 'solid-js'
 
 let executed = false
@@ -292,39 +292,80 @@ export const Route = createFileRoute('/')({
 })
 function Home() { const result = Route.useLoaderData(); const ok = () => result().executed && result().promise; return <main><h1>Save note</h1><p>Body executed: {String(result().executed)}</p><p>Return type: {String(result().tag)}</p><p data-result={ok() ? 'pass' : 'fail'}>{ok() ? 'PASS' : 'FAIL'} — server action {ok() ? 'ran' : 'returned a raw generator'}.</p></main> }`,
 
-  '70-getobserver-sync-scope': `import { createFileRoute } from '@tanstack/solid-router'
+  "70-getobserver-sync-scope": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, getObserver, untrack } from 'solid-js'
 
 function Home() { const tracked = createMemo(() => getObserver() !== null); const cleared = createMemo(() => untrack(() => getObserver()) === null); const sync = createMemo(() => getObserver() !== null, { sync: true }); const ok = tracked() && cleared() && sync(); return <main><h1>Tracked subscription adapter</h1><p>Tracked memo: {String(tracked())}</p><p>Cleared in untrack: {String(cleared())}</p><p>Compiler-style sync memo: {String(sync())}</p><p data-result={ok ? 'pass' : 'fail'}>{ok ? 'PASS' : 'FAIL'} — observer scope differs during SSR.</p></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '71-writable-memo-lazy-setter': `import { createFileRoute } from '@tanstack/solid-router'
+  "71-writable-memo-lazy-setter": `import { createFileRoute } from '@tanstack/solid-router'
 import { createSignal } from 'solid-js'
 
 function Home() { let fetches = 0; const [, setDetails] = createSignal(() => { fetches++; return 'fetched' }, { lazy: true }); const returned = setDetails('override'); const ok = fetches === 0 && returned === 'override'; return <main><h1>Closed details panel</h1><p>Fetches before first read: {fetches}</p><p>Setter returned: {String(returned)}</p><p data-result={ok ? 'pass' : 'fail'}>{ok ? 'PASS' : 'FAIL'} — lazy writable memo diverged during SSR.</p></main> }
 export const Route = createFileRoute('/')({ component: Home })`,
 
-  '72-resolve-server-throw': `import { createFileRoute } from '@tanstack/solid-router'
+  "72-resolve-server-throw": `import { createFileRoute } from '@tanstack/solid-router'
 import { createMemo, resolve } from 'solid-js'
 
 export const Route = createFileRoute('/')({ loader: async () => { const user = createMemo(async () => ({ name: 'Ada' })); return { name: await resolve(() => user().name) } }, component: Home })
 function Home() { const user = Route.useLoaderData(); return <main><h1>User</h1><p data-result="pass">PASS — resolved {user().name} during SSR.</p></main> }`,
 
-  '73-createuniqueid-outside-context': `import { createFileRoute } from '@tanstack/solid-router'
+  "73-createuniqueid-outside-context": `import { createFileRoute } from '@tanstack/solid-router'
 import { createUniqueId } from 'solid-js'
 
 const fieldId = createUniqueId()
 function Home() { return <main><h1>Contact form</h1><label for={fieldId}>Email</label><input id={fieldId} /><p data-result="pass">PASS — shared module created id {fieldId}.</p></main> }
-export const Route = createFileRoute('/')({ component: Home })`,
-}
+export const Route = createFileRoute('/')({ component: Home })`
+};
 
-const packageJson = slug => JSON.stringify({ name: slug, private: true, type: 'module', scripts: { dev: 'vite dev', start: 'vite dev', repro: 'node scripts/repro.mjs', build: 'vite build' }, dependencies: { '@solidjs/web': '2.0.0-beta.17', '@tanstack/solid-router': '2.0.0-beta.23', '@tanstack/solid-start': '2.0.0-beta.24', 'solid-js': '2.0.0-beta.17' }, devDependencies: { vite: '^7.0.0', 'vite-plugin-solid': '3.0.0-next.7', typescript: '^5.8.3' } }, null, 2)
-const vite = `import { defineConfig } from 'vite'\nimport { tanstackStart } from '@tanstack/solid-start/plugin/vite'\nimport solid from 'vite-plugin-solid'\nexport default defineConfig({ server: { port: 3000 }, plugins: [tanstackStart(), solid({ ssr: true })] })\n`
-const tsconfig = JSON.stringify({ include: ['src/**/*.ts', 'src/**/*.tsx'], compilerOptions: { strict: true, target: 'ESNext', module: 'ESNext', moduleResolution: 'Bundler', jsx: 'preserve', jsxImportSource: '@solidjs/web', types: ['vite/client'], lib: ['DOM', 'DOM.Iterable', 'ESNext'], skipLibCheck: true, noEmit: true, isolatedModules: true } }, null, 2)
-const router = `import { createRouter } from '@tanstack/solid-router'\nimport { routeTree } from './routeTree.gen'\nexport function getRouter() { return createRouter({ routeTree }) }\n`
-const rootRoute = `/// <reference types="vite/client" />\nimport { HeadContent, createRootRoute } from '@tanstack/solid-router'\nimport { HydrationScript } from '@solidjs/web'\nimport type { JSX } from '@solidjs/web'\nexport const Route = createRootRoute({ shellComponent: RootDocument })\nfunction RootDocument(props: { children: JSX.Element }) { return <html lang="en"><head><HydrationScript /></head><body><HeadContent />{props.children}</body></html> }\n`
-const browserObserver = `window.__reproEvents=[];const note=e=>{const value=e.reason||e.error||e.message;window.__reproEvents.push(String(value&&value.message||value));const target=document.getElementById('browser-verdict');if(target){target.dataset.result='fail';target.textContent='FAIL — browser error: '+window.__reproEvents.join(' | ')}};addEventListener('unhandledrejection',note);addEventListener('error',note)`
-const hydratedRootRoute = `/// <reference types="vite/client" />\nimport { HeadContent, Scripts, createRootRoute } from '@tanstack/solid-router'\nimport { HydrationScript } from '@solidjs/web'\nimport type { JSX } from '@solidjs/web'\nexport const Route = createRootRoute({ shellComponent: RootDocument })\nfunction RootDocument(props: { children: JSX.Element }) { return <html lang="en"><head><HydrationScript /><script innerHTML={${JSON.stringify(browserObserver)}} /></head><body><HeadContent />{props.children}<Scripts /></body></html> }\n`
+const packageJson = slug =>
+  JSON.stringify(
+    {
+      name: slug,
+      private: true,
+      type: "module",
+      scripts: {
+        dev: "vite dev",
+        start: "vite dev",
+        repro: "node scripts/repro.mjs",
+        build: "vite build"
+      },
+      dependencies: {
+        "@solidjs/web": "2.0.0-beta.17",
+        "@tanstack/solid-router": "2.0.0-beta.23",
+        "@tanstack/solid-start": "2.0.0-beta.24",
+        "solid-js": "2.0.0-beta.17"
+      },
+      devDependencies: { vite: "^7.0.0", "vite-plugin-solid": "3.0.0-next.7", typescript: "^5.8.3" }
+    },
+    null,
+    2
+  );
+const vite = `import { defineConfig } from 'vite'\nimport { tanstackStart } from '@tanstack/solid-start/plugin/vite'\nimport solid from 'vite-plugin-solid'\nexport default defineConfig({ server: { port: 3000 }, plugins: [tanstackStart(), solid({ ssr: true })] })\n`;
+const tsconfig = JSON.stringify(
+  {
+    include: ["src/**/*.ts", "src/**/*.tsx"],
+    compilerOptions: {
+      strict: true,
+      target: "ESNext",
+      module: "ESNext",
+      moduleResolution: "Bundler",
+      jsx: "preserve",
+      jsxImportSource: "@solidjs/web",
+      types: ["vite/client"],
+      lib: ["DOM", "DOM.Iterable", "ESNext"],
+      skipLibCheck: true,
+      noEmit: true,
+      isolatedModules: true
+    }
+  },
+  null,
+  2
+);
+const router = `import { createRouter } from '@tanstack/solid-router'\nimport { routeTree } from './routeTree.gen'\nexport function getRouter() { return createRouter({ routeTree }) }\n`;
+const rootRoute = `/// <reference types="vite/client" />\nimport { HeadContent, createRootRoute } from '@tanstack/solid-router'\nimport { HydrationScript } from '@solidjs/web'\nimport type { JSX } from '@solidjs/web'\nexport const Route = createRootRoute({ shellComponent: RootDocument })\nfunction RootDocument(props: { children: JSX.Element }) { return <html lang="en"><head><HydrationScript /></head><body><HeadContent />{props.children}</body></html> }\n`;
+const browserObserver = `window.__reproEvents=[];const note=e=>{const value=e.reason||e.error||e.message;window.__reproEvents.push(String(value&&value.message||value));const target=document.getElementById('browser-verdict');if(target){target.dataset.result='fail';target.textContent='FAIL — browser error: '+window.__reproEvents.join(' | ')}};addEventListener('unhandledrejection',note);addEventListener('error',note)`;
+const hydratedRootRoute = `/// <reference types="vite/client" />\nimport { HeadContent, Scripts, createRootRoute } from '@tanstack/solid-router'\nimport { HydrationScript } from '@solidjs/web'\nimport type { JSX } from '@solidjs/web'\nexport const Route = createRootRoute({ shellComponent: RootDocument })\nfunction RootDocument(props: { children: JSX.Element }) { return <html lang="en"><head><HydrationScript /><script innerHTML={${JSON.stringify(browserObserver)}} /></head><body><HeadContent />{props.children}<Scripts /></body></html> }\n`;
 const repro = `import { spawn } from 'node:child_process'
 const child = spawn('npx', ['vite', 'dev', '--port', '3000'], { stdio: ['ignore', 'pipe', 'pipe'] })
 child.stdout.on('data', data => process.stdout.write('[dev] ' + data))
@@ -345,42 +386,67 @@ for (let i = 0; i < 120; i++) {
   await new Promise(resolve => setTimeout(resolve, 500))
 }
 console.log('Dev server remains at http://localhost:3000/ (Ctrl-C to stop).')
-`
+`;
 
-function write(path, contents) { mkdirSync(resolve(path, '..'), { recursive: true }); writeFileSync(path, contents.endsWith('\n') ? contents : contents + '\n') }
+function write(path, contents) {
+  mkdirSync(resolve(path, ".."), { recursive: true });
+  writeFileSync(path, contents.endsWith("\n") ? contents : contents + "\n");
+}
 
 for (const [stem, route] of Object.entries(scenarios)) {
-  const slug = `draft-${stem}`
-  const dir = join(ROOT, 'repros', slug)
-  for (const obsolete of ['vite.config.js', 'src/repro.jsx', 'src/repro.tsx', 'src/index.jsx', 'src/index.tsx', 'src/App.tsx', 'index.html']) {
-    rmSync(join(dir, obsolete), { force: true })
+  const slug = `draft-${stem}`;
+  const dir = join(ROOT, "repros", slug);
+  for (const obsolete of [
+    "vite.config.js",
+    "src/repro.jsx",
+    "src/repro.tsx",
+    "src/index.jsx",
+    "src/index.tsx",
+    "src/App.tsx",
+    "index.html"
+  ]) {
+    rmSync(join(dir, obsolete), { force: true });
   }
-  write(join(dir, 'package.json'), packageJson(slug))
-  write(join(dir, 'vite.config.ts'), vite)
-  write(join(dir, 'tsconfig.json'), tsconfig)
-  write(join(dir, 'src/router.tsx'), router)
-  const hydrates = ['51-ssr-rejection-client-unhandled', '57-createreaction-id-slot', '58-transparent-memo-server', '59-readhydratedvalue-envelope', '64-repeat-count-nan-undefined'].includes(stem)
-  write(join(dir, 'src/routes/__root.tsx'), hydrates ? hydratedRootRoute : rootRoute)
-  write(join(dir, 'src/routes/index.tsx'), route)
-  write(join(dir, 'scripts/repro.mjs'), repro)
-  const draft = join(DRAFTS, stem + '.md')
-  write(join(dir, 'README.md'), `# ${slug}\n\nA minimal ${hydrates ? 'streaming SSR + browser hydration' : 'SSR'} reproduction implemented as a real TanStack Start route. The page explains the realistic application scenario and reports the observed result.\n\n- Preview: \`npm install && npm start\`\n- Raw SSR response: \`npm run repro\`\n- Issue draft: \`issue-drafts/${stem}.md\`${existsSync(draft) ? '' : '\n- Status: historical repro; the corresponding draft is resolved'}\n`)
+  write(join(dir, "package.json"), packageJson(slug));
+  write(join(dir, "vite.config.ts"), vite);
+  write(join(dir, "tsconfig.json"), tsconfig);
+  write(join(dir, "src/router.tsx"), router);
+  const hydrates = [
+    "51-ssr-rejection-client-unhandled",
+    "57-createreaction-id-slot",
+    "58-transparent-memo-server",
+    "59-readhydratedvalue-envelope",
+    "64-repeat-count-nan-undefined"
+  ].includes(stem);
+  write(join(dir, "src/routes/__root.tsx"), hydrates ? hydratedRootRoute : rootRoute);
+  write(join(dir, "src/routes/index.tsx"), route);
+  write(join(dir, "scripts/repro.mjs"), repro);
+  const draft = join(DRAFTS, stem + ".md");
+  write(
+    join(dir, "README.md"),
+    `# ${slug}\n\nA minimal ${hydrates ? "streaming SSR + browser hydration" : "SSR"} reproduction implemented as a real TanStack Start route. The page explains the realistic application scenario and reports the observed result.\n\n- Preview: \`npm install && npm start\`\n- Raw SSR response: \`npm run repro\`\n- Issue draft: \`issue-drafts/${stem}.md\`${existsSync(draft) ? "" : "\n- Status: historical repro; the corresponding draft is resolved"}\n`
+  );
   if (existsSync(draft)) {
-    let markdown = readFileSync(draft, 'utf8')
-    const live = `**[Live TanStack Start reproduction](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=${slug})** — opens the real SSR route in StackBlitz.`
-    const start = markdown.indexOf('### Your Example Website or App')
-    const end = markdown.indexOf('### Steps to Reproduce', start)
-    const hydrationNote = hydrates ? ' This project includes Start\'s `<Scripts />`, so the same request proceeds through real browser hydration; an early head listener makes global hydration errors visible on the page.' : ''
-    const example = `### Your Example Website or App\n\n${live}\n\nThis is a normal TanStack Start route—no direct \`renderToString\`, custom SSR server, captured HTML, or export-condition harness. Hard-refresh the preview to exercise Start's server render.${hydrationNote} The page shows the expected behavior and a self-verifying result; \`npm run repro\` also checks the raw HTTP response so request-level crashes remain visible.\n\n\`src/routes/index.tsx\`:\n\n\`\`\`tsx\n${route}\n\`\`\`\n\n`
-    markdown = markdown.slice(0, start) + example + markdown.slice(end)
-    const stepsStart = markdown.indexOf('### Steps to Reproduce the Bug or Issue')
-    const expectedStart = markdown.indexOf('### Expected behavior', stepsStart)
-    const steps = `### Steps to Reproduce the Bug or Issue\n\n1. Open the live reproduction (or run \`npm install && npm start\`).\n2. Hard-refresh \`/\` so TanStack Start renders the route on the server.\n3. Read the on-page expected/actual result. For request-level failures, run \`npm run repro\` and inspect the HTTP status and terminal verdict.\n\n`
-    markdown = markdown.slice(0, stepsStart) + steps + markdown.slice(expectedStart)
-    if (!markdown.includes('- Runtime: TanStack Start')) {
-      markdown = markdown.replace('### Platform\n', '### Platform\n\n- Runtime: TanStack Start SSR (`@tanstack/solid-start@2.0.0-beta.24`)\n')
+    let markdown = readFileSync(draft, "utf8");
+    const live = `**[Live TanStack Start reproduction](https://yumemi-thomas.github.io/solid-repros/launch.html?repro=${slug})** — opens the real SSR route in StackBlitz.`;
+    const start = markdown.indexOf("### Your Example Website or App");
+    const end = markdown.indexOf("### Steps to Reproduce", start);
+    const hydrationNote = hydrates
+      ? " This project includes Start's `<Scripts />`, so the same request proceeds through real browser hydration; an early head listener makes global hydration errors visible on the page."
+      : "";
+    const example = `### Your Example Website or App\n\n${live}\n\nThis is a normal TanStack Start route—no direct \`renderToString\`, custom SSR server, captured HTML, or export-condition harness. Hard-refresh the preview to exercise Start's server render.${hydrationNote} The page shows the expected behavior and a self-verifying result; \`npm run repro\` also checks the raw HTTP response so request-level crashes remain visible.\n\n\`src/routes/index.tsx\`:\n\n\`\`\`tsx\n${route}\n\`\`\`\n\n`;
+    markdown = markdown.slice(0, start) + example + markdown.slice(end);
+    const stepsStart = markdown.indexOf("### Steps to Reproduce the Bug or Issue");
+    const expectedStart = markdown.indexOf("### Expected behavior", stepsStart);
+    const steps = `### Steps to Reproduce the Bug or Issue\n\n1. Open the live reproduction (or run \`npm install && npm start\`).\n2. Hard-refresh \`/\` so TanStack Start renders the route on the server.\n3. Read the on-page expected/actual result. For request-level failures, run \`npm run repro\` and inspect the HTTP status and terminal verdict.\n\n`;
+    markdown = markdown.slice(0, stepsStart) + steps + markdown.slice(expectedStart);
+    if (!markdown.includes("- Runtime: TanStack Start")) {
+      markdown = markdown.replace(
+        "### Platform\n",
+        "### Platform\n\n- Runtime: TanStack Start SSR (`@tanstack/solid-start@2.0.0-beta.24`)\n"
+      );
     }
-    writeFileSync(draft, markdown)
+    writeFileSync(draft, markdown);
   }
-  console.log(slug)
+  console.log(slug);
 }

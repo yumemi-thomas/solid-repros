@@ -8,13 +8,12 @@
 import { renderToStream } from "@solidjs/web";
 import { createMemo, lazy, Loading } from "solid-js";
 
-const asyncValue = (value, ms = 10) =>
-  new Promise((r) => setTimeout(() => r(value), ms));
+const asyncValue = (value, ms = 10) => new Promise(r => setTimeout(() => r(value), ms));
 
 // The manifest maps each lazy module URL to its built asset.
 const manifest = {
   "./Route.tsx": { file: "assets/route.js" },
-  "./Footer.tsx": { file: "assets/footer.js" },
+  "./Footer.tsx": { file: "assets/footer.js" }
 };
 
 const RouteComp = () => {
@@ -47,7 +46,7 @@ function App() {
 await LazyRoute.preload();
 await LazyFooter.preload();
 
-const html = await new Promise((resolve) => {
+const html = await new Promise(resolve => {
   renderToStream(() => <App />, { manifest }).then(resolve);
 });
 
@@ -55,9 +54,7 @@ const html = await new Promise((resolve) => {
 // MUST appear in the root asset map, serialized under key "_assets".
 const scripts = (html.match(/<script[^>]*>[\s\S]*?<\/script>/g) || []).join("\n");
 const rootAssets = scripts.match(/_\$HY\.r\["_assets"\][^;]*/)?.[0] ?? "";
-const allAssetMaps = [...html.matchAll(/_\$HY\.r\["([^"]*_assets)"\]=[^;]*/g)].map(
-  (m) => m[0]
-);
+const allAssetMaps = [...html.matchAll(/_\$HY\.r\["([^"]*_assets)"\]=[^;]*/g)].map(m => m[0]);
 
 const ok = rootAssets.includes("./Footer.tsx");
 

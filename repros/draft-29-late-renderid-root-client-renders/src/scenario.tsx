@@ -27,8 +27,8 @@ const islandB = document.getElementById("island-b")!;
 globalThis._$HY = { events: [], completed: new WeakSet(), r: {} };
 
 // Server output of renderToString with renderId "ia" / "ib":
-islandA.innerHTML = '<div _hk=ia0><button>a:<!--$-->0<!--/--></button></div>';
-islandB.innerHTML = '<div _hk=ib0><button>b:<!--$-->0<!--/--></button></div>';
+islandA.innerHTML = "<div _hk=ia0><button>a:<!--$-->0<!--/--></button></div>";
+islandB.innerHTML = "<div _hk=ib0><button>b:<!--$-->0<!--/--></button></div>";
 
 const serverButtonB = islandB.querySelector("button");
 

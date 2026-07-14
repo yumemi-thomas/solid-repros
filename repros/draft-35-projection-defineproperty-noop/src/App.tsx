@@ -8,15 +8,18 @@ export default function App() {
   let reportedSuccess: boolean | undefined;
   let draftAdded: number | undefined;
 
-  const projected = createProjection((draft: { added?: number }) => {
-    reportedSuccess = Reflect.defineProperty(draft, "added", {
-      value: 2,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-    draftAdded = draft.added;
-  }, {} as { added?: number });
+  const projected = createProjection(
+    (draft: { added?: number }) => {
+      reportedSuccess = Reflect.defineProperty(draft, "added", {
+        value: 2,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+      draftAdded = draft.added;
+    },
+    {} as { added?: number }
+  );
 
   const [verdict, setVerdict] = createSignal<Verdict>();
 

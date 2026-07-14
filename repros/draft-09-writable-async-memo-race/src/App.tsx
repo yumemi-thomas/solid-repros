@@ -40,8 +40,8 @@ export default function App() {
     <main style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>Manual set() during an in-flight fetch</h2>
       <p>
-        A manual set() while the fetch is pending should immediately become the visible value
-        ("the manual value wins").
+        A manual set() while the fetch is pending should immediately become the visible value ("the
+        manual value wins").
       </p>
       <button onClick={typeWhileLoading}>type while loading</button>
       <Show when={verdict()}>

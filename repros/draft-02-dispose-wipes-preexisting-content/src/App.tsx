@@ -4,7 +4,11 @@ import { render } from "@solidjs/web";
 // The embeddable widget (a client-only island).
 function ReviewForm() {
   const [stars, setStars] = createSignal(0);
-  return <p>Your rating: <button onClick={() => setStars(stars() + 1)}>★ {stars()}</button></p>;
+  return (
+    <p>
+      Your rating: <button onClick={() => setStars(stars() + 1)}>★ {stars()}</button>
+    </p>
+  );
 }
 
 // The library's mount API: render into whatever element the host provides and
@@ -35,8 +39,12 @@ export default function App() {
   return (
     <section style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>Embeddable reviews island mounted into a host slot</h2>
-      <button onClick={mount} disabled={mounted()}>mount widget</button>{" "}
-      <button onClick={unmount} disabled={!mounted()}>unmount widget</button>
+      <button onClick={mount} disabled={mounted()}>
+        mount widget
+      </button>{" "}
+      <button onClick={unmount} disabled={!mounted()}>
+        unmount widget
+      </button>
       <p
         style={{
           color: slotWiped() === undefined ? "#666" : slotWiped() ? "#c5221f" : "#137333"

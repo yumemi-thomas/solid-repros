@@ -5,5 +5,5 @@ import solid from "vite-plugin-solid";
 // generator, so solid-js resolves to its server build (where the bug lives).
 export default defineConfig({
   plugins: [solid({ solid: { generate: "ssr", hydratable: true } })],
-  resolve: { conditions: ["node", "solid", "import", "module", "default"] },
+  resolve: { conditions: ["node", "solid", "import", "module", "default"] }
 });

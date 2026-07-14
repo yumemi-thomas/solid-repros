@@ -10,8 +10,7 @@
 import { renderToStream } from "@solidjs/web";
 import { createMemo, Loading, Reveal } from "solid-js";
 
-const fetchIn = (value, ms) =>
-  new Promise((resolve) => setTimeout(() => resolve(value), ms));
+const fetchIn = (value, ms) => new Promise(resolve => setTimeout(() => resolve(value), ms));
 
 function Article() {
   const article = createMemo(async () => fetchIn("Article body", 30));
@@ -49,7 +48,7 @@ function App(props) {
 
 function streamPage(section) {
   const started = Date.now();
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const chunks = [];
     renderToStream(() => <App section={section} />).pipe({
       write(chunk) {
@@ -57,34 +56,27 @@ function streamPage(section) {
       },
       end() {
         resolve(chunks);
-      },
+      }
     });
   });
 }
 
 function inspect(chunks) {
-  const full = chunks.map((c) => c.chunk).join("");
-  const groups = [...full.matchAll(/\$dfj\((\[[^\]]*\])\)/g)].map((m) =>
-    JSON.parse(m[1])
-  );
-  const singles = [...full.matchAll(/\$df\("([^"]+)"\)/g)].map((m) => m[1]);
-  const templateEntry = chunks.find((c) => c.chunk.includes("Article body"));
-  const articleKey = templateEntry?.chunk.match(
-    /<template id="((?!pl-)[^"]+)"/
-  )?.[1];
+  const full = chunks.map(c => c.chunk).join("");
+  const groups = [...full.matchAll(/\$dfj\((\[[^\]]*\])\)/g)].map(m => JSON.parse(m[1]));
+  const singles = [...full.matchAll(/\$df\("([^"]+)"\)/g)].map(m => m[1]);
+  const templateEntry = chunks.find(c => c.chunk.includes("Article body"));
+  const articleKey = templateEntry?.chunk.match(/<template id="((?!pl-)[^"]+)"/)?.[1];
   const activated =
     !!articleKey &&
-    (groups.some((keys) => keys.includes(articleKey)) ||
-      singles.includes(articleKey));
+    (groups.some(keys => keys.includes(articleKey)) || singles.includes(articleKey));
   return { ok: activated, groups, singles, articleKey, templateAt: templateEntry?.at };
 }
 
 async function run(label, section) {
   const result = inspect(await streamPage(section));
   console.log(`\n${label}: ${result.ok ? "PASS" : "FAIL"}`);
-  console.log(
-    `  article template "${result.articleKey}" streamed @ ~${result.templateAt}ms`
-  );
+  console.log(`  article template "${result.articleKey}" streamed @ ~${result.templateAt}ms`);
   console.log(
     `  activations: groups=${JSON.stringify(result.groups)} singles=${JSON.stringify(result.singles)}`
   );

@@ -1,4 +1,11 @@
-import { createEffect, createLoadingBoundary, createRoot, createSignal, flush, Show } from "solid-js";
+import {
+  createEffect,
+  createLoadingBoundary,
+  createRoot,
+  createSignal,
+  flush,
+  Show
+} from "solid-js";
 
 type Verdict = { ok: boolean; actual: string };
 
@@ -47,8 +54,8 @@ export default function App() {
     <main style={{ "font-family": "system-ui", padding: "16px" }}>
       <h2>Sibling boundary's effect skipped on dispose</h2>
       <p>
-        Both boundaries' effects track the same signal; boundary A's effect disposes A when it
-        sees the update. Boundary B's queued effect should still run in that flush.
+        Both boundaries' effects track the same signal; boundary A's effect disposes A when it sees
+        the update. Boundary B's queued effect should still run in that flush.
       </p>
       <button onClick={applyCoupon}>apply coupon</button>
       <Show when={verdict()}>

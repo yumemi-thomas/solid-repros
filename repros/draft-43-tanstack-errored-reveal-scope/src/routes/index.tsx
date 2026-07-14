@@ -1,20 +1,24 @@
-import { createFileRoute, Link } from '@tanstack/solid-router'
-import { createMemo, Errored, Loading, Reveal } from 'solid-js'
+import { createFileRoute, Link } from "@tanstack/solid-router";
+import { createMemo, Errored, Loading, Reveal } from "solid-js";
 
 const later = <T,>(value: T, ms: number) =>
-  new Promise<T>(resolve => setTimeout(() => resolve(value), ms))
+  new Promise<T>(resolve => setTimeout(() => resolve(value), ms));
 
 function OrderSummary() {
-  const order = createMemo(async () => later('Order #4021 — Trail Pack 40L, $149', 300))
-  return <section><h1>{order()}</h1></section>
+  const order = createMemo(async () => later("Order #4021 — Trail Pack 40L, $149", 300));
+  return (
+    <section>
+      <h1>{order()}</h1>
+    </section>
+  );
 }
 
 // Flaky third-party panel: wrapped in <Errored> for robustness — exactly what
 // TanStack Router's CatchBoundary (= Solid.Errored) does automatically around
 // any route with an errorComponent.
 function PaymentOptions() {
-  const options = createMemo(async () => later('Pay with: Card · Konbini · PayPay', 2000))
-  return <aside>{options()}</aside>
+  const options = createMemo(async () => later("Pay with: Card · Konbini · PayPay", 2000));
+  return <aside>{options()}</aside>;
 }
 
 function Home() {
@@ -22,9 +26,9 @@ function Home() {
     <main>
       <h2>Checkout — Reveal order="together", payment panel wrapped in Errored</h2>
       <p>
-        The client treats the Errored-wrapped panel as OUTSIDE the group: order
-        summary (300ms) reveals on its own, panel (2000ms) independently. The
-        server enrolls it: hard refresh holds everything on skeletons to ~2s.
+        The client treats the Errored-wrapped panel as OUTSIDE the group: order summary (300ms)
+        reveals on its own, panel (2000ms) independently. The server enrolls it: hard refresh holds
+        everything on skeletons to ~2s.
       </p>
       <Reveal order="together">
         <Loading fallback={<p style="color:gray">loading order…</p>}>
@@ -38,7 +42,7 @@ function Home() {
       </Reveal>
       <Link to="/control">Control page (no Errored wrapper)</Link>
     </main>
-  )
+  );
 }
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute("/")({ component: Home });
