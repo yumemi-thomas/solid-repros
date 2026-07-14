@@ -6,6 +6,7 @@
     "dev": "node scripts/repro.mjs",
     "start": "node scripts/repro.mjs",
     "repro": "node scripts/repro.mjs",
+    "build": "vite build",
     "dev:server-only": "vite dev"
   },
   "dependencies": {
