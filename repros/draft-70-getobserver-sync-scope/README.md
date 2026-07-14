@@ -1,14 +1,7 @@
-# draft-70 — `getObserver()` diverges on the server (SSR)
+# draft-70-getobserver-sync-scope
 
-SSR/client asymmetry (Solid **2.0.0-beta.17**). `getObserver()` — the documented
-"subscribe only if tracked" escape hatch — behaves differently on the server in
-three observable ways: it returns `null` inside sync memos (which is what the
-compiler emits for every JSX expression), `untrack()` does not clear it (server
-`untrack` is a passthrough), and where it is non-null the value is the internal
-`ServerComputation` record, not the `Owner` the type promises. The client is
-non-null in tracking scopes, `null` under `untrack`, and shaped as an `Owner`.
+A minimal SSR reproduction implemented as a real TanStack Start route. The page explains the realistic application scenario and reports the observed result.
 
-Run: `npm run repro` (terminal). Prints PASS/FAIL per facet plus the raw server
-observer keys. On beta.17 three of four facets FAIL.
-
-Issue draft: `issue-drafts/70-getobserver-sync-scope.md`
+- Preview: `npm install && npm start`
+- Raw SSR response: `npm run repro`
+- Issue draft: `issue-drafts/70-getobserver-sync-scope.md`

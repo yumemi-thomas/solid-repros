@@ -2,7 +2,21 @@
   "name": "draft-51-ssr-rejection-client-unhandled",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
-  "dependencies": { "@solidjs/web": "2.0.0-beta.17", "solid-js": "2.0.0-beta.17" },
-  "devDependencies": { "vite": "^6.0.0", "vite-plugin-solid": "next" }
+  "scripts": {
+    "dev": "vite dev",
+    "start": "vite dev",
+    "repro": "node scripts/repro.mjs",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@solidjs/web": "2.0.0-beta.17",
+    "@tanstack/solid-router": "2.0.0-beta.23",
+    "@tanstack/solid-start": "2.0.0-beta.24",
+    "solid-js": "2.0.0-beta.17"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-solid": "3.0.0-next.7",
+    "typescript": "^5.8.3"
+  }
 }

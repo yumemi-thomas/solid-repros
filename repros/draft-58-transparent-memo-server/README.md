@@ -1,12 +1,7 @@
-# draft-58 — server ignores `createMemo(..., { transparent: true })` → hydration id drift
+# draft-58-transparent-memo-server
 
-SSR/client asymmetry (Solid **2.0.0-beta.17**). The server consumes a hydration
-id slot for a transparent memo; the client (which honors `transparent`) does not.
-The emitted `_hk` ids drift by one, so the client claims the wrong node. Under the
-dev build (the StackBlitz preview) hydrate throws the guard "Failed attempt to
-create new DOM elements during hydration"; under prod the first post-hydration
-update is silently dropped.
+A minimal streaming SSR + browser hydration reproduction implemented as a real TanStack Start route. The page explains the realistic application scenario and reports the observed result.
 
-Run: `npm run dev` and open the preview — the verdict renders on the page.
-
-Issue draft: `issue-drafts/58-transparent-memo-server.md`
+- Preview: `npm install && npm start`
+- Raw SSR response: `npm run repro`
+- Issue draft: `issue-drafts/58-transparent-memo-server.md`

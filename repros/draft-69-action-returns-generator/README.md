@@ -1,13 +1,7 @@
-# draft-69 — server `action(fn)` returns the raw generator; body never runs (SSR)
+# draft-69-action-returns-generator
 
-SSR/client asymmetry (Solid **2.0.0-beta.17**). The server build returns the
-generator function unwrapped, so calling the "action" yields a `Generator` (tag
-`"Generator"`, no `.then`) and the body never runs. The client returns a
-promise-driving wrapper. In isomorphic code `await save(...)` on the server
-resolves immediately to the inert Generator and reads as success while nothing
-ran.
+A minimal SSR reproduction implemented as a real TanStack Start route. The page explains the realistic application scenario and reports the observed result.
 
-Run: `npm run repro` (terminal). Prints `typeof result.then`, the toStringTag,
-and whether the body executed, then PASS/FAIL. On beta.17 it FAILs.
-
-Issue draft: `issue-drafts/69-action-returns-generator.md`
+- Preview: `npm install && npm start`
+- Raw SSR response: `npm run repro`
+- Issue draft: `issue-drafts/69-action-returns-generator.md`
